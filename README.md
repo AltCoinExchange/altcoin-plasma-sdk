@@ -1,2 +1,6 @@
 # altcoin-light-client
-Altcoin node light client
+
+## development
+`npm run tsc:watch`
+
+`npm run serve`
