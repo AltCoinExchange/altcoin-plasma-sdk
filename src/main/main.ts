@@ -13,9 +13,9 @@ export class LightClient {
    * Get lastest state from node
    * @returns {Promise<any>}
    */
-  public async refreshState() {
+  public async refreshState(path: string = '') {
     const { state, send } = await connect(this.GCI, this.options);
-    const stateResult = await state();
+    const stateResult = await state[path];
     this.state = stateResult;
     return stateResult;
   }
