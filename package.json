@@ -1,24 +1,24 @@
 {
   "name": "altcoin-light-client",
   "version": "1.0.0",
-  "description": "",
+  "description": "Altcoin light client",
   "main": "main.js",
   "scripts": {
     "tsc:watch": "tsc -w",
     "build": "tsc",
-    "connect": "nodemon --watch dist/ -d 1 ./dist/main/main.js peer1",
+    "connect": "nodemon --watch dist/ -d 1 ./dist/main/main.js",
     "test": "mocha dist/test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AltCoinExchange/altcoin-node.git"
+    "url": "git+https://github.com/AltCoinExchange/altcoin-light-client.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/AltCoinExchange/altcoin-node/issues"
+    "url": "https://github.com/AltCoinExchange/altcoin-light-client/issues"
   },
-  "homepage": "https://github.com/AltCoinExchange/altcoin-node#readme",
+  "homepage": "https://github.com/AltCoinExchange/altcoin-light-client#readme",
   "dependencies": {
     "bitcore-lib": "^0.15.0",
     "google-protobuf": "^3.5.0",
