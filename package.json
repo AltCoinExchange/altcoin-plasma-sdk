@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/AltCoinExchange/altcoin-plasma-sdk#readme",
   "dependencies": {
+    "altcoin-dex-contracts": "git+ssh://git@github.com/AltCoinExchange/altcoin-dex-contracts.git",
     "altcoin-ethereum-wallet": "git+ssh://git@github.com/AltCoinExchange/altcoin-ethereum-wallet.git",
     "bitcore-lib": "^0.15.0",
     "google-protobuf": "^3.5.0",

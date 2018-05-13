@@ -19,7 +19,7 @@ describe('client test', function() {
             {"address":"E26BBB8EFEAD2738EEC642F1BC0C60D750B30608", "pub_key": {"type":"AC26791624DE60","value":"M7C9qN0VmfELcqhjS0vpOe7Xb2VzVAF58rzrwWnW5qg="}, "power":10,"name":""}
           ],
         "app_hash":""
-      }});
+      }}, "pkey");
     const state = await lightClient.refreshState();
     console.log(state);
     const state2 = await lightClient.refreshState('volume');
