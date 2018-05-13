@@ -1,7 +1,7 @@
 {
-  "name": "altcoin-light-client",
+  "name": "altcoin-plasma-sdk",
   "version": "1.0.0",
-  "description": "Altcoin light client",
+  "description": "Altcoin plasma sdk",
   "main": "main.js",
   "scripts": {
     "tsc:watch": "tsc -w",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AltCoinExchange/altcoin-light-client.git"
+    "url": "git+https://github.com/AltCoinExchange/altcoin-plasma-sdk.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/AltCoinExchange/altcoin-light-client/issues"
+    "url": "https://github.com/AltCoinExchange/altcoin-plasma-sdk/issues"
   },
-  "homepage": "https://github.com/AltCoinExchange/altcoin-light-client#readme",
+  "homepage": "https://github.com/AltCoinExchange/altcoin-plasma-sdk#readme",
   "dependencies": {
     "bitcore-lib": "^0.15.0",
     "google-protobuf": "^3.5.0",

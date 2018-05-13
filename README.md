@@ -1,4 +1,4 @@
-# altcoin-light-client
+# altcoin-plasma-sdk
 
 ## development
 `npm run tsc:watch`
