@@ -5,7 +5,7 @@ import {EthEngine, EthereumWallet, TokenFactory, TOKENS} from "altcoin-ethereum-
 import {EthereumAccount} from "./eth/ethereum-account";
 import {App} from "./config/main.config";
 import {DEX} from "altcoin-ethereum-wallet/dist/src/eth/tokens/dex";
-import {TokenConfig} from "altcoin-ethereum-wallet/dist/src/config/tokens/tokenconfig";
+
 const { connect } = require('lotion');
 
 export class LightClient {
@@ -51,7 +51,7 @@ export class LightClient {
 
     // TODO: More checks
     // Approve token for spender
-    const approvedResult = await tokenContract.approve(TokenConfig.DEX.contractAddress, amount);
+    const approvedResult = await tokenContract.approve(App.eth.contractAddress, amount);
 
     // Deposit token to contract
     const result = await tokenContract.DepositToken(amount);
