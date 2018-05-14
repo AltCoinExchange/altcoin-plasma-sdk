@@ -11,7 +11,7 @@
     "declaration": true,
     "experimentalDecorators": true,
     "lib": [
-      "es6", "ES2015"
+      "es6", "es2015"
     ],
   },
   "exclude": [
