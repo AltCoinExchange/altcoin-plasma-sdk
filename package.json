@@ -2,17 +2,41 @@
   "name": "altcoin-plasma-sdk",
   "version": "1.0.0",
   "description": "Altcoin plasma sdk",
-  "main": "main.js",
+  "main": "dist/index.js",
+  "typings": "dist/src/index.d.ts",
+  "jam": {
+    "main": "./dist/index.browser.js"
+  },
+  "browser": {
+    "dist/index.js": "./dist/index.browser.js"
+  },
   "scripts": {
     "tsc:watch": "tsc -w",
-    "build": "tsc",
+    "build": "webpack || echo not ok && babel dist/index.browser.js -o dist/index.browser.js --presets=es2015",
     "connect": "nodemon --watch dist/ -d 1 ./dist/main/main.js",
+    "prepare": "npm run build && npm test",
+    "release": "standard-version && npm pack",
     "test": "mocha dist/test"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AltCoinExchange/altcoin-plasma-sdk.git"
   },
+  "keywords": [
+    "example",
+    "typescript",
+    "library",
+    "starter",
+    "webpack",
+    "browserify",
+    "dts-bundle",
+    "package",
+    "tslint",
+    "jest",
+    "tsloader",
+    "boilerplate",
+    "ts-loader"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
@@ -32,6 +56,7 @@
     "protocol-buffers": "^4.0.4",
     "protocol-buffers-encodings": "^1.1.0",
     "rxjs": "^5.5.8",
+    "spawn-sync": "^2.0.0",
     "varint": "git+ssh://git@github.com:AltCoinExchange/varint.git",
     "web3": "^1.0.0-beta.33"
   },
@@ -43,6 +68,21 @@
     "mocha": "^5.0.5",
     "nodemon": "^1.17.2",
     "ts-node": "^5.0.1",
-    "typescript": "^2.8.1"
+    "typescript": "^2.8.1",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^8.0.0",
+    "browserify": "^14.5.0",
+    "delete-empty": "^1.0.1",
+    "dts-bundle": "^0.7.3",
+    "standard-version": "^4.2.0",
+    "ts-loader": "^2.3.3",
+    "tslint": "^5.6.0",
+    "tslint-loader": "^3.5.3",
+    "uglify-js": "^3.3.4",
+    "webpack": "^3.5.5",
+    "webpack-node-externals": "^1.6.0"
   }
 }
