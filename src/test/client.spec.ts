@@ -8,6 +8,7 @@ describe('client test', function() {
     this.timeout(160000);
     const peer2 = "b37095b01e624caef9b253eeb3f1f7dc80885c9fd4d31ea20586f2dd911b51ae";
     const peer1 = "0fc067498cdbb1d8f102035cc4160469fb098c7c7fdfd0801fc6e681a982257b";
+
     const lightClient = new LightClient(peer2, {
       lite: true,
       liteTimeout: 10000,
@@ -24,7 +25,9 @@ describe('client test', function() {
     const state = await lightClient.refreshState();
     console.log(state);
 
-    const result = await lightClient.deposit(TOKENS.AUGUR, 1);
+    // Test deposit
+    // const result = await lightClient.deposit(TOKENS.AUGUR, 1000);
+    // lightClient.authenticate("f55a297b6dd11a95726c57c2cf180c705c2b2097f7933682eddc957df7ed5c6b");
 
     const state2 = await lightClient.refreshState('volume');
     console.log(state2);

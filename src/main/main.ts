@@ -4,7 +4,6 @@ import {OrderDto} from "./dto/order.dto";
 import {EthEngine, EthereumWallet, TokenFactory, TOKENS} from "altcoin-ethereum-wallet";
 import {EthereumAccount} from "./eth/ethereum-account";
 import {App} from "./config/main.config";
-import {DEX} from "altcoin-ethereum-wallet/dist/src/eth/tokens/dex";
 
 const { connect } = require('lotion');
 
@@ -16,10 +15,41 @@ export class LightClient {
   private keystore: any;
 
   constructor(private GCI: string, private options, private privKey) {
+    this.authenticate(this.privKey);
+  }
+
+  /**
+   * Authenticate user
+   * @param {string} privKey
+   */
+  public authenticate(privKey: string) {
+    this.privKey = privKey;
     this.acc = EthereumAccount.recoverAccount(privKey);
     this.eng = new EthEngine(null, App.eth, null);
     this.keystore = this.eng.recoverAccount(this.privKey);
     this.eng.login(this.keystore);
+  }
+
+  /**
+   * Recover account and sign message
+   * @param pkey
+   * @param order
+   * @returns {any}
+   */
+  public recoverAccountAndSignMessage(pkey, order) {
+    let acc = EthereumAccount.recoverAccount(pkey);
+    const signature = acc.signReceiptTendermint(order.payload.sender,
+      order.payload.sellToken,
+      order.payload.buyToken,
+      order.payload.sellAmount, order.payload.buyAmount, order.payload.nonce);
+
+    order.payload["v"] = signature.v;
+    order.payload["r"] = signature.r;
+    order.payload["s"] = signature.s;
+    order.payload["signature"] = signature.signature;
+    order.payload["messageHash"] = signature.messageHash;
+
+    return order;
   }
 
   /**
@@ -57,7 +87,8 @@ export class LightClient {
     const result = await tokenContract.DepositToken(amount);
 
     // Notify side chain about it
-    return this.send({nonce: result} as DepositDto);
+    // TODO: Fix getting the nonce
+    return await this.send({ action: "deposit", payload: {nonce: 2} });
   }
 
   /**
@@ -70,14 +101,24 @@ export class LightClient {
    */
   public async make(sellToken: TOKENS, buyToken: TOKENS, sellAmount: number, buyAmount: number) {
 
-    // TODO: Get latest nonce from state
     // Get token
     const buyTokenObj = TokenFactory.GetToken(buyToken, this.eng);
     const sellTokenObj = TokenFactory.GetToken(sellToken, this.eng);
 
-    const data = this.acc.signReceiptTendermint(this.acc.address, sellTokenObj.contractAddress, buyTokenObj.contractAddress, sellAmount, buyAmount, 1);
+    const order = {
+      "action" : "make",
+      "payload" : {
+        "sellToken": sellTokenObj.contractAddress,
+        "buyToken": buyTokenObj.contractAddress,
+        "sellAmount": sellAmount,
+        "buyAmount": buyAmount,
+        "nonce": "1", // TODO: Get latest nonce from state
+        "sender": this.acc.address,
+      }};
 
-    return this.send(data);
+    const signedOrder = this.recoverAccountAndSignMessage(this.privKey, order);
+
+    return this.send(signedOrder);
   }
 
   /**
