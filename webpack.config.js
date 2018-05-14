@@ -8,6 +8,7 @@ var deleteEmpty = require('delete-empty');
 var PACKAGE_FILE = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf-8'));
 var LIB_NAME = PACKAGE_FILE.name;
 var UglifyJS = require("uglify-js");
+var UglifyES = require("uglify-es");
 
 /* helper function to get into build directory */
 var libPath = function (name) {
@@ -129,9 +130,7 @@ var create_browser_version = function (inputJs) {
     });
 
     browserified.on('end', () => {
-        const uglified =  data; //UglifyJS.minify(data).code;
-
-        // console.log(UglifyJS.minify(data));
+        const uglified =  UglifyES.minify(data).code;
 
         const byte = encodeURI(uglified).split(/%..|./).length - 1;
         const aproxMb = (byte / 1024 / 1024).toString().substring(0, 4);
