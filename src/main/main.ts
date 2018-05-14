@@ -62,8 +62,11 @@ export class LightClient {
 
   /**
    * Make order
-   * @param {OrderDto} data
-   * @returns {Promise<void>}
+   * @param {TOKENS} sellToken
+   * @param {TOKENS} buyToken
+   * @param {number} sellAmount
+   * @param {number} buyAmount
+   * @returns {Promise<any>}
    */
   public async make(sellToken: TOKENS, buyToken: TOKENS, sellAmount: number, buyAmount: number) {
 
@@ -75,6 +78,15 @@ export class LightClient {
     const data = this.acc.signReceiptTendermint(this.acc.address, sellTokenObj.contractAddress, buyTokenObj.contractAddress, sellAmount, buyAmount, 1);
 
     return this.send(data);
+  }
+
+  /**
+   * Get active orders for this account
+   * @returns {Promise<any>}
+   */
+  public async getActiveOrders() {
+    const result = await this.refreshState(`accounts[${this.acc.address}]`);
+    return result;
   }
 
   /**
