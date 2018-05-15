@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Altcoin plasma sdk",
   "main": "dist/index.js",
-  "typings": "dist/src/index.d.ts",
+  "typings": "dist/main/main.d.ts",
   "jam": {
     "main": "./dist/index.browser.js"
   },
@@ -13,7 +13,7 @@
   "scripts": {
     "tsc:watch": "tsc -w",
     "build_dist": "webpack || echo not ok && babel dist/index.browser.js -o dist/index.browser.js --presets=es2015",
-    "connect": "nodemon --watch dist/ -d 1 ./dist/main/main.js",
+    "connect": "nodemon --watch dist/ -d 1 ./dist/index.js",
     "prepare": "",
     "release": "standard-version && npm pack",
     "test": "mocha dist/test"
