@@ -14,7 +14,7 @@
     "tsc:watch": "tsc -w",
     "build": "webpack || echo not ok && babel dist/index.browser.js -o dist/index.browser.js --presets=es2015",
     "connect": "nodemon --watch dist/ -d 1 ./dist/main/main.js",
-    "prepare": "npm run build && npm test",
+    "prepare": "npm run build",
     "release": "standard-version && npm pack",
     "test": "mocha dist/test"
   },
@@ -57,8 +57,7 @@
     "protocol-buffers-encodings": "^1.1.0",
     "rxjs": "^5.5.8",
     "spawn-sync": "^2.0.0",
-    "uglify-es": "^3.3.9",
-    "varint": "git+ssh://git@github.com:AltCoinExchange/varint.git",
+    "varint": "git+ssh://git@github.com/AltCoinExchange/varint.git",
     "web3": "^1.0.0-beta.33"
   },
   "devDependencies": {
@@ -83,6 +82,7 @@
     "tslint": "^5.6.0",
     "tslint-loader": "^3.5.3",
     "uglify-js": "^3.3.4",
+    "uglify-es": "^3.3.9",
     "webpack": "^3.5.5",
     "webpack-node-externals": "^1.6.0"
   }
