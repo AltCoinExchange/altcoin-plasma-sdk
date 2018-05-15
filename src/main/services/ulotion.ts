@@ -1,5 +1,5 @@
 import {ulotionHelper} from "./ulotion-helper";
-const axios = require('axios');
+let axios = require('axios');
 
 export class uLotion {
 
@@ -21,8 +21,9 @@ export class uLotion {
   public async getGenesisActivePeer(): Promise<string> {
     let rpcAddr;
     if (this.GCI) {
-      const genesis = await ulotionHelper.fetchGenesis(this.GCI);
-      rpcAddr = `http://${genesis.peer.host}:${this.options.tendermintPort}`;
+      rpcAddr = this.nodes[0];
+      // const genesis = await ulotionHelper.fetchGenesis(this.GCI);
+      //rpcAddr = `http://${genesis.peer.host}:${this.options.tendermintPort}`;
     } else {
       rpcAddr = this.nodes[0]; //.replace('http:', 'ws:');
     }
