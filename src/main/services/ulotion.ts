@@ -78,7 +78,7 @@ export class uLotion {
   }
 
   public async state(path = '') {
-    const rpcAddr = this.nodes[0].replace('http:', 'ws:');
+    const rpcAddr = this.nodes[0]; //.replace('http:', 'ws:');
     const queryResponse = await axios.get(`${rpcAddr}/abci_query?path="${path}"`);
 
     let resp = queryResponse.data.result.response;
