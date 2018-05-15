@@ -4,18 +4,19 @@ import {OrderDto} from "./dto/order.dto";
 import {EthEngine, EthereumWallet, TokenFactory, TOKENS} from "altcoin-ethereum-wallet";
 import {EthereumAccount} from "./eth/ethereum-account";
 import {App} from "./config/main.config";
-
-const { connect } = require('lotion');
+import {uLotion} from "./services/ulotion";
 
 export class LightClient {
 
   private state: any;
   private acc: EthereumAccount;
   private eng: EthEngine;
+  private ulotion: uLotion;
   private keystore: any;
 
   constructor(private GCI: string, private options, private privKey) {
     this.authenticate(this.privKey);
+    this.ulotion = new uLotion(this.GCI, this.options);
   }
 
   /**
@@ -57,15 +58,18 @@ export class LightClient {
    * @returns {Promise<any>}
    */
   public async refreshState(path: string = '') {
-    const { state, send } = await connect(this.GCI, this.options);
-    const stateResult = await state[path];
-    this.state = stateResult;
-    return stateResult;
+    const state = await this.ulotion.state(path);
+    return state;
   }
 
+  /**
+   * Send transaction to node
+   * @param data
+   * @returns {Promise<any>}
+   */
   private async send(data: any) {
-    const { state, send } = await connect(this.GCI, this.options);
-    return await send(data);
+    const result = await this.ulotion.send(data);
+    return result;
   }
 
   /**
@@ -88,7 +92,7 @@ export class LightClient {
 
     // Notify side chain about it
     // TODO: Fix getting the nonce
-    return await this.send({ action: "deposit", payload: {nonce: 2} });
+    return await this.send({ action: "deposit", payload: {nonce: 3} });
   }
 
   /**

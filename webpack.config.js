@@ -130,7 +130,9 @@ var create_browser_version = function (inputJs) {
     });
 
     browserified.on('end', () => {
-        const uglified =  UglifyES.minify(data).code;
+        const uglified =  UglifyJS.minify(data).code;
+
+        //console.log(UglifyJS.minify(data));
 
         const byte = encodeURI(uglified).split(/%..|./).length - 1;
         const aproxMb = (byte / 1024 / 1024).toString().substring(0, 4);

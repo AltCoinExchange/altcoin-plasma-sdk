@@ -7,6 +7,7 @@ export declare class LightClient {
     private state;
     private acc;
     private eng;
+    private ulotion;
     private keystore;
     constructor(GCI: string, options: any, privKey: any);
     /**
@@ -26,6 +27,11 @@ export declare class LightClient {
      * @returns {Promise<any>}
      */
     refreshState(path?: string): Promise<any>;
+    /**
+     * Send transaction to node
+     * @param data
+     * @returns {Promise<any>}
+     */
     private send(data);
     /**
      * Deposit token

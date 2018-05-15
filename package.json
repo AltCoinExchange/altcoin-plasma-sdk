@@ -44,20 +44,21 @@
   },
   "homepage": "https://github.com/AltCoinExchange/altcoin-plasma-sdk#readme",
   "dependencies": {
-    "altcoin-dex-contracts": "git+ssh://git@github.com/AltCoinExchange/altcoin-dex-contracts.git",
     "altcoin-ethereum-wallet": "git+ssh://git@github.com/AltCoinExchange/altcoin-ethereum-wallet.git",
+    "axios": "^0.18.0",
     "bn.js": "^4.11.8",
     "google-protobuf": "^3.5.0",
     "hdkey": "^0.8.0",
     "int64-buffer": "^0.1.10",
+    "json-stable-stringify": "^1.0.1",
     "jsonpath": "^1.0.0",
-    "lotion": "git+ssh://git@github.com/AltCoinExchange/lotion.git",
     "node-wget": "^0.4.2",
     "protocol-buffers": "^4.0.4",
     "protocol-buffers-encodings": "^1.1.0",
     "rxjs": "^5.5.8",
     "spawn-sync": "^2.0.0",
     "varint": "git+ssh://git@github.com/AltCoinExchange/varint.git",
+    "varstruct": "^6.1.2",
     "web3": "^1.0.0-beta.33"
   },
   "devDependencies": {
