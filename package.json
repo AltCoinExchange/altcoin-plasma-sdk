@@ -47,6 +47,8 @@
     "altcoin-ethereum-wallet": "git+ssh://git@github.com/AltCoinExchange/altcoin-ethereum-wallet.git",
     "axios": "^0.18.0",
     "bn.js": "^4.11.8",
+    "dat-swarm-defaults": "^1.0.1",
+    "discovery-channel": "^5.5.1",
     "google-protobuf": "^3.5.0",
     "hdkey": "^0.8.0",
     "int64-buffer": "^0.1.10",

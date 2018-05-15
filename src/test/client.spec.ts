@@ -12,6 +12,7 @@ describe('client test', function() {
     const lightClient = new LightClient(peer2, {
       lite: true,
       liteTimeout: 10000,
+      tendermintPort: 46657,
       nodes: ["http://localhost:46657"],
       genesis: {
         "genesis_time":"0001-01-01T00:00:00Z",

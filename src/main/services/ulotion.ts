@@ -1,84 +1,42 @@
+import {ulotionHelper} from "./ulotion-helper";
 const axios = require('axios');
-const vstruct = require('varstruct');
-const stableStringify = require('json-stable-stringify');
-
-const TxStruct = vstruct([
-  { name: 'data', type: vstruct.VarString(vstruct.UInt32BE) },
-  { name: 'nonce', type: vstruct.UInt32BE },
-]);
 
 export class uLotion {
 
   private nodes = [];
-  private static base64Prefix = ':base64:';
 
-  constructor(GCI, options) {
+  constructor(private GCI, private options) {
     this.nodes = options.nodes;
-    if (this.nodes === undefined || this.nodes.length === 0) {
-      throw Error('Nodes not set');
-    }
-  }
-
-  /**
-   * Stringify obj
-   * @param obj
-   * @returns {any}
-   */
-  private static stringify(obj) {
-    let convertedObj = uLotion.deepClone(obj, uLotion.bufferToBase64Replacer);
-    return stableStringify(convertedObj)
-  }
-
-  /**
-   * Replace buffer to base64
-   * @param value
-   * @returns {any}
-   */
-  private static bufferToBase64Replacer(value) {
-    if (
-      typeof value === 'object' &&
-      value != null &&
-      value.type === 'Buffer' &&
-      Array.isArray(value.data)
-    ) {
-      value = Buffer.from(value)
-    }
-    if (!Buffer.isBuffer(value)) return value;
-    return `${this.base64Prefix}${value.toString('base64')}`
-  }
-
-  /**
-   * Clones an object
-   * @param obj
-   * @param replacer
-   * @returns {{}}
-   */
-  private static deepClone(obj, replacer) {
-    let newObj = Array.isArray(obj) ? [] : {};
-    Object.assign(newObj, obj);
-    for (let key in newObj) {
-      newObj[key] = replacer(newObj[key]);
-      if (typeof newObj[key] === 'object') {
-        newObj[key] = this.deepClone(newObj[key], replacer);
+    if (!GCI) {
+      if (this.nodes === undefined || this.nodes.length === 0) {
+        throw Error('Nodes not set');
       }
     }
-    return newObj;
   }
 
   /**
-   * Encode transaction
-   * @param txData
-   * @param nonce
-   * @returns {any}
+   * Get genesis active peer
+   * @returns {Promise<string>}
    */
-  private static encode(txData, nonce) {
-      let data = uLotion.stringify(txData);
-      let bytes = TxStruct.encode({ nonce, data });
-      return bytes;
+  public async getGenesisActivePeer(): Promise<string> {
+    let rpcAddr;
+    if (this.GCI) {
+      const genesis = await ulotionHelper.fetchGenesis(this.GCI);
+      rpcAddr = `http://${genesis.peer.host}:${this.options.tendermintPort}`;
+    } else {
+      rpcAddr = this.nodes[0]; //.replace('http:', 'ws:');
+    }
+    return rpcAddr;
   }
 
+  /**
+   * Get state from tendermint client
+   * @param {string} path
+   * @returns {Promise<any>}
+   */
   public async state(path = '') {
-    const rpcAddr = this.nodes[0]; //.replace('http:', 'ws:');
+
+    const rpcAddr = await this.getGenesisActivePeer();
     const queryResponse = await axios.get(`${rpcAddr}/abci_query?path="${path}"`);
 
     let resp = queryResponse.data.result.response;
@@ -94,12 +52,18 @@ export class uLotion {
     return value;
   }
 
+  /**
+   * Send transaction
+   * @param tx
+   * @returns {Promise<any>}
+   */
   public async send(tx) {
 
+      const rpcAddr = await this.getGenesisActivePeer();
       let nonce = Math.floor(Math.random() * (2 << 12));
-      let txBytes = '0x' + uLotion.encode(tx, nonce).toString('hex');
+      let txBytes = '0x' + ulotionHelper.encode(tx, nonce).toString('hex');
 
-      const result = await axios.get(`${this.nodes[0].replace(
+      const result = await axios.get(`${rpcAddr.replace(
             'ws:',
             'http:'
           )}/broadcast_tx_commit`,
