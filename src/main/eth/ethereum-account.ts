@@ -1,8 +1,8 @@
-import * as bitcore from "bitcore-lib";
 import * as Account from "eth-lib/lib/account";
 import * as Hash from "eth-lib/lib/hash";
 import * as Web3Utils from "web3-utils";
 import { DepositDto } from '../dto/deposit.dto';
+import * as HDKey from "hdkey";
 
 export interface RawAccount {
   privateKey: string;
@@ -23,10 +23,13 @@ export class EthereumAccount {
   }
 
   static recoverAccountFromSeed(seed: string): EthereumAccount {
-    const hdKey = new bitcore.HDPrivateKey(seed);
+    const hdkey = new HDKey.fromMasterSeed(seed);
+    const hdnode = hdkey.derive("m/44'/60'/0'/0/0");
+    const privateKey = hdnode._privateKey.toString();
 
-    const privKey = hdKey.privateKey.toString();
-    return new EthereumAccount(Account.fromPrivate("0x" + privKey));
+    const accounts = Account.accounts;
+    const acc = accounts.privateKeyToAccount("0x" + privateKey);
+    return acc;
   }
 
   static recoverAccount(pk: string): EthereumAccount {
