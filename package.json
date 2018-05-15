@@ -12,7 +12,7 @@
   },
   "scripts": {
     "tsc:watch": "tsc -w",
-    "build": "webpack || echo not ok && babel dist/index.browser.js -o dist/index.browser.js --presets=es2015",
+    "build_dist": "webpack || echo not ok && babel dist/index.browser.js -o dist/index.browser.js --presets=es2015",
     "connect": "nodemon --watch dist/ -d 1 ./dist/main/main.js",
     "prepare": "",
     "release": "standard-version && npm pack",
