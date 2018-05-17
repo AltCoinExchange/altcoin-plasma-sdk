@@ -1,8 +1,12 @@
 import { createHash } from "crypto-browserify";
 const stableStringify = require('json-stable-stringify');
+// const IPFS = require('ipfs');
+// const OrbitDB = require('orbit-db');
 // const discoveryChannel = require('discovery-channel');
-// let net = require('net');
+// const net = require('net');
 // const defaults = require('dat-swarm-defaults')();
+const signalhub = require('signalhub');
+const swarm = require('webrtc-swarm')
 const vstruct = require('varstruct');
 
 let TxStruct = vstruct([
@@ -36,43 +40,53 @@ export class ulotionHelper {
     return bytes;
   }
 
-  // public static fetchGenesis(GCI): Promise<any> {
-  //   return new Promise(async (resolve, reject) => {
-  //     let dc = discoveryChannel(defaults);
-  //     dc.on('peer', (id, peer) => {
-  //       let socket = net.connect(peer.port, peer.host)
-  //       let data = '';
-  //       socket.on('data', function(chunk) {
-  //         data += chunk.toString()
-  //       });
-  //       socket.on('end', function() {
-  //         // validate the data this peer told us about
-  //         if (ulotionHelper.getGCIFromGenesis(data) === GCI) {
-  //           resolve({ id, peer, data });
-  //         }
-  //       });
-  //       socket.on('error', e => {
-  //         socket.destroy();
-  //       })
-  //     });
-  //
-  //     dc.join(GCI)
-  //   })
-  // }
-  //
-  // private static parse(json) {
-  //   let obj = JSON.parse(json);
-  //   return ulotionHelper.convertBase64ToBuffers(obj);
-  // }
-  //
-  // private static getGCIFromGenesis(genesis) {
-  //   let hash = createHash('sha256');
-  //   // TODO: Check for genesisTime if needs to be hashed to get correct GCI
-  //   let genesisJson: any = ulotionHelper.parse(genesis);
-  //   genesisJson.genesis_time = "";
-  //   let genesisStr = ulotionHelper.stringify(genesisJson);
-  //   return hash.update(genesisStr, 'utf8').digest().toString('hex')
-  // }
+  public static fetchGenesis(GCI): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let hub = signalhub(GCI, ['https://swap.altcoin.io:9091']);
+      let sw;
+
+      // Check for environment
+      if (typeof process === 'object' && process + '' === '[object process]') {
+        sw = swarm(hub, { wrtc: require('wrtc') });
+      }
+      else{
+        sw = swarm(hub, {});
+      }
+
+      sw.on('peer', function(peer, id) {
+        peer.on('data', function(data) {
+          // full node writing to tell me what port to use for their tendermint rpc server
+          let port = Number(data.toString());
+          if (port > 100 && port < 65536) {
+            peer.destroy();
+            resolve({peer: { host: peer.remoteAddress, port: port}});
+          }
+        })
+      })
+    })
+  }
+
+  /**
+   * Parse string
+   * @param json
+   */
+  private static parse(json) {
+    let obj = JSON.parse(json);
+    return ulotionHelper.convertBase64ToBuffers(obj);
+  }
+
+  /**
+   * Get hash data from genesis
+   * @param genesis
+   */
+  private static getGCIFromGenesis(genesis) {
+    let hash = createHash('sha256');
+    // TODO: Check for genesisTime if needs to be hashed to get correct GCI
+    let genesisJson: any = ulotionHelper.parse(genesis);
+    genesisJson.genesis_time = "";
+    let genesisStr = ulotionHelper.stringify(genesisJson);
+    return hash.update(genesisStr, 'utf8').digest().toString('hex')
+  }
 
   /**
    * Clones an object

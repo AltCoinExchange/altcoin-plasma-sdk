@@ -21,9 +21,9 @@ export class uLotion {
   public async getGenesisActivePeer(): Promise<string> {
     let rpcAddr;
     if (this.GCI) {
-      rpcAddr = this.nodes[0];
-      // const genesis = await ulotionHelper.fetchGenesis(this.GCI);
-      //rpcAddr = `http://${genesis.peer.host}:${this.options.tendermintPort}`;
+      // rpcAddr = this.nodes[0];
+      const genesis = await ulotionHelper.fetchGenesis(this.GCI);
+      rpcAddr = `http://${genesis.peer.host}:${this.options.tendermintPort}`;
     } else {
       rpcAddr = this.nodes[0]; //.replace('http:', 'ws:');
     }

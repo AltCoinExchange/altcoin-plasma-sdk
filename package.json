@@ -59,10 +59,13 @@
     "protocol-buffers": "^4.0.4",
     "protocol-buffers-encodings": "^1.1.0",
     "rxjs": "^5.5.8",
+    "signalhub": "^4.9.0",
     "spawn-sync": "^2.0.0",
     "varint": "git+ssh://git@github.com/AltCoinExchange/varint.git",
     "varstruct": "^6.1.2",
-    "web3": "^1.0.0-beta.33"
+    "web3": "^1.0.0-beta.33",
+    "webrtc-swarm": "^2.9.0",
+    "wrtc": "^0.1.4"
   },
   "devDependencies": {
     "@types/chai": "^4.1.2",
