@@ -25,7 +25,7 @@ export class EthereumAccount {
   static recoverAccountFromSeed(seed: string): EthereumAccount {
     const hdkey = new HDKey.fromMasterSeed(seed);
     const hdnode = hdkey.derive("m/44'/60'/0'/0/0");
-    const privateKey = hdnode._privateKey.toString();
+    const privateKey = hdnode._privateKey.toString("hex");
 
     const accounts = Account.accounts;
     const acc = accounts.privateKeyToAccount("0x" + privateKey);
