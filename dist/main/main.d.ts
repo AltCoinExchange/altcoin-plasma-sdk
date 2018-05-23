@@ -4,12 +4,13 @@ export declare class LightClient {
     private GCI;
     private options;
     private privKey;
+    private ethConfig;
     private state;
     private acc;
     private eng;
     private ulotion;
     private keystore;
-    constructor(GCI: string, options: any, privKey: any);
+    constructor(GCI: string, options: any, privKey: any, ethConfig?: any);
     /**
      * Authenticate user
      * @param {string} privKey

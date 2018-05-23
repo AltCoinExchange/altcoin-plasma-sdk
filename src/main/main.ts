@@ -14,9 +14,12 @@ export class LightClient {
   private ulotion: uLotion;
   private keystore: any;
 
-  constructor(private GCI: string, private options, private privKey) {
+  constructor(private GCI: string, private options, private privKey, private ethConfig?) {
     this.authenticate(this.privKey);
     this.ulotion = new uLotion(this.GCI, this.options);
+    if (!ethConfig) {
+      this.ethConfig = App.eth;
+    }
   }
 
   /**
@@ -26,7 +29,7 @@ export class LightClient {
   public authenticate(privKey: string) {
     this.privKey = privKey;
     this.acc = EthereumAccount.recoverAccount(privKey);
-    this.eng = new EthEngine(null, App.eth, null);
+    this.eng = new EthEngine(null, this.ethConfig, null);
     this.keystore = this.eng.recoverAccount(this.privKey);
     this.eng.login(this.keystore);
   }
@@ -85,7 +88,7 @@ export class LightClient {
 
     // TODO: More checks
     // Approve token for spender
-    const approvedResult = await tokenContract.approve(App.eth.contractAddress, amount);
+    const approvedResult = await tokenContract.approve(this.ethConfig.contractAddress, amount);
 
     // Deposit token to contract
     const result = await tokenContract.DepositToken(amount);
