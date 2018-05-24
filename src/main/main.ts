@@ -15,7 +15,6 @@ export class LightClient {
   private keystore: any;
 
   constructor(private GCI: string, private options, private privKey, private ethConfig?) {
-    this.authenticate(this.privKey);
     this.ulotion = new uLotion(this.GCI, this.options);
     if (!ethConfig) {
       this.ethConfig = App.eth;
@@ -82,6 +81,8 @@ export class LightClient {
    * @returns {Promise<any>}
    */
   public async deposit(token: TOKENS, amount: number) {
+
+    this.authenticate(this.privKey);
 
     // Get token
     const tokenContract = TokenFactory.GetToken(token, this.eng);
