@@ -1,7 +1,7 @@
 import {DepositDto} from "./dto/deposit.dto";
 import {WithdrawDto} from "./dto/withdraw.dto";
 import {OrderDto} from "./dto/order.dto";
-import {EthEngine, EthereumWallet, TokenFactory, TOKENS} from "altcoin-ethereum-wallet";
+import {EthEngine, EthereumWallet, TokenFactory, TOKENS} from "./interfaces/objinterfaces";
 import {EthereumAccount} from "./eth/ethereum-account";
 import {App} from "./config/main.config";
 import {uLotion} from "./services/ulotion";

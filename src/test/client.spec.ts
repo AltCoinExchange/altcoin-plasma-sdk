@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import {LightClient} from "../main/main";
-import {TOKENS} from "altcoin-ethereum-wallet";
 
 describe('client test', function() {
   it('connect', async function() {
