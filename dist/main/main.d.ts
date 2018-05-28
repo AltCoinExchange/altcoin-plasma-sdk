@@ -1,6 +1,16 @@
 import { WithdrawDto } from "./dto/withdraw.dto";
 import { TOKENS } from "altcoin-ethereum-wallet";
-export { TOKENS, TokenFactory, ERC20, EthEngine, EthereumWallet, generateMnemonic, AugurTokenTestnet, AugurTokenMainnet } from "altcoin-ethereum-wallet";
+import { IBlockchainState } from "./interfaces";
+export { TOKENS, TokenFactory, ERC20, EthEngine, EthereumWallet, TokenConfig, TokenConfigMain, generateMnemonic, AugurTokenTestnet, AugurTokenMainnet } from "altcoin-ethereum-wallet";
+export declare const TokenMapping: {
+    [x: string]: TOKENS;
+};
+/**
+ * Reversed map of the tokens with contract address as value
+ * @returns {{}}
+ * @constructor
+ */
+export declare const TokenMappingReverse: () => {};
 export declare class LightClient {
     private GCI;
     private options;
@@ -28,7 +38,7 @@ export declare class LightClient {
      * Get lastest state from node
      * @returns {Promise<any>}
      */
-    refreshState(path?: string): Promise<any>;
+    refreshState(path?: string): Promise<IBlockchainState>;
     /**
      * Send transaction to node
      * @param data
@@ -55,7 +65,7 @@ export declare class LightClient {
      * Get active orders for this account
      * @returns {Promise<any>}
      */
-    getActiveOrders(): Promise<any>;
+    getActiveOrders(): Promise<IBlockchainState>;
     /**
      * Withdraw
      * @param {WithdrawDto} data

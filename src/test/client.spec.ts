@@ -26,10 +26,10 @@ describe('client test', function() {
         "app_hash":""
       }},"2b529f5b279ce59fd20f1c46908266b664939bc51f2d9a6e6f5cdcbf02ae17cd");
     const state = await lightClient.refreshState();
-    console.log(state);
+    console.log(JSON.stringify(state));
 
     // Test deposit
-    const result = await lightClient.deposit(TOKENS.AUGUR, 1000);
+    //const result = await lightClient.deposit(TOKENS.AUGUR, 1000);
     // lightClient.authenticate("f55a297b6dd11a95726c57c2cf180c705c2b2097f7933682eddc957df7ed5c6b");
 
     const state2 = await lightClient.refreshState('volume');

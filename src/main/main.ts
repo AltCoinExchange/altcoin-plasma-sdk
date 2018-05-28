@@ -3,9 +3,11 @@ import {WithdrawDto} from "./dto/withdraw.dto";
 import {OrderDto} from "./dto/order.dto";
 import {EthereumAccount} from "./eth/ethereum-account";
 import {uLotion} from "./services/ulotion";
-import {EthEngine, TokenFactory, TOKENS} from "altcoin-ethereum-wallet";
+import {EthEngine, TokenConfig, TokenFactory, TOKENS} from "altcoin-ethereum-wallet";
 import {App} from "./config/main.config";
 import {AugurTokenTestnet} from "altcoin-ethereum-wallet/dist/src/eth-tokens/augur";
+import {IBlockchainState} from "./interfaces";
+import {StateHelper} from "./common/state-helper";
 
 // Export wallet
 export {
@@ -14,9 +16,59 @@ export {
   ERC20,
   EthEngine,
   EthereumWallet,
+  TokenConfig,
+  TokenConfigMain,
   generateMnemonic,
   AugurTokenTestnet,
   AugurTokenMainnet} from "altcoin-ethereum-wallet";
+
+// TODO: Add dynamic tokens for adding new ones later
+export const TokenMapping = {
+  [TokenConfig.Augur.contractAddress.toLowerCase()]: TOKENS.AUGUR,
+  [TokenConfig.Golem.contractAddress.toLowerCase()]: TOKENS.GOLEM,
+  [TokenConfig.Gnosis.contractAddress.toLowerCase()]: TOKENS.GNOSIS,
+  [TokenConfig.Bat.contractAddress.toLowerCase()]: TOKENS.BAT,
+  [TokenConfig.Aragon.contractAddress.toLowerCase()]: TOKENS.ARAGON,
+  [TokenConfig.Eos.contractAddress.toLowerCase()]: TOKENS.EOS,
+  [TokenConfig.Salt.contractAddress.toLowerCase()]: TOKENS.SALT,
+  [TokenConfig.Civic.contractAddress.toLowerCase()]: TOKENS.CIVIC,
+  [TokenConfig.OmiseGo.contractAddress.toLowerCase()]: TOKENS.OMISEGO,
+  [TokenConfig.District0x.contractAddress.toLowerCase()]: TOKENS.DISTRICT0X,
+  [TokenConfig.StatusNetwork.contractAddress.toLowerCase()]: TOKENS.STATUSNETWORK,
+  [TokenConfig.Substratum.contractAddress.toLowerCase()]: TOKENS.SUBSTRATUM,
+  [TokenConfig.Tron.contractAddress.toLowerCase()]: TOKENS.TRON,
+  [TokenConfig.Bytom.contractAddress.toLowerCase()]: TOKENS.BYTOM,
+  [TokenConfig.Dent.contractAddress.toLowerCase()]: TOKENS.DENT,
+  [TokenConfig.Populous.contractAddress.toLowerCase()]: TOKENS.POPULOUS,
+  [TokenConfig.Maker.contractAddress.toLowerCase()]: TOKENS.MAKER,
+  [TokenConfig.DigixDAO.contractAddress.toLowerCase()]: TOKENS.DIGIXDAO,
+  [TokenConfig.QASH.contractAddress.toLowerCase()]: TOKENS.QASH,
+  [TokenConfig.Ethos.contractAddress.toLowerCase()]: TOKENS.ETHOS,
+  [TokenConfig.FunFair.contractAddress.toLowerCase()]: TOKENS.FUNFAIR,
+  [TokenConfig.RequestNetwork.contractAddress.toLowerCase()]: TOKENS.REQUESTNETWORK,
+  [TokenConfig.Bancor.contractAddress.toLowerCase()]: TOKENS.BANCOR,
+  [TokenConfig.Iconomi.contractAddress.toLowerCase()]: TOKENS.ICONOMI,
+  [TokenConfig.TenXPay.contractAddress.toLowerCase()]: TOKENS.TENXPAY,
+  [TokenConfig.Storj.contractAddress.toLowerCase()]: TOKENS.STORJ,
+  [TokenConfig.EnjinCoin.contractAddress.toLowerCase()]: TOKENS.ENJINCOIN,
+};
+
+/**
+ * Reversed map of the tokens with contract address as value
+ * @returns {{}}
+ * @constructor
+ */
+export const TokenMappingReverse = () => {
+  const result = {};
+
+  for (let prop in TokenMapping) {
+    if(TokenMapping.hasOwnProperty(prop)) {
+      result[TokenMapping[prop]] = prop;
+    }
+  }
+
+  return result;
+};
 
 export class LightClient {
 
@@ -72,7 +124,29 @@ export class LightClient {
    * @returns {Promise<any>}
    */
   public async refreshState(path: string = '') {
-    const state = await this.ulotion.state(path);
+    const state = JSON.parse(await this.ulotion.state(path)) as IBlockchainState;
+
+    if (path === '') {
+      StateHelper.mapAddressToEnum(state, "volume");
+      for (const acc in state.accounts) {
+        if (state.accounts.hasOwnProperty(acc)) {
+          for (const balance in state.accounts[acc].balance) {
+            StateHelper.mapAddressToEnum(state.accounts[acc], "balance");
+          }
+        }
+      }
+    } else if (path === "volume") {
+      StateHelper.mapAddressToEnum(state);
+    } else if (path === "accounts") {
+      for (const acc in state) {
+        if (state.hasOwnProperty(acc)) {
+          for (const balance in state[acc].balance) {
+            StateHelper.mapAddressToEnum(state[acc], "balance");
+          }
+        }
+      }
+    }
+
     return state;
   }
 
