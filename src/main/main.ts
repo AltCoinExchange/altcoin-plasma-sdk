@@ -1,10 +1,13 @@
 import {DepositDto} from "./dto/deposit.dto";
 import {WithdrawDto} from "./dto/withdraw.dto";
 import {OrderDto} from "./dto/order.dto";
-import {EthEngine, EthereumWallet, TokenFactory, TOKENS} from "./interfaces/objinterfaces";
 import {EthereumAccount} from "./eth/ethereum-account";
-import {App} from "./config/main.config";
 import {uLotion} from "./services/ulotion";
+import {EthEngine, TokenFactory, TOKENS} from "altcoin-ethereum-wallet";
+import {App} from "./config/main.config";
+
+// Export wallet
+export * from "altcoin-ethereum-wallet";
 
 export class LightClient {
 
@@ -94,9 +97,12 @@ export class LightClient {
     // Deposit token to contract
     const result = await tokenContract.DepositToken(amount);
 
+    // Deposit token to contract
+    const nonce = await tokenContract.currentDepositNonce();
+
     // Notify side chain about it
     // TODO: Fix getting the nonce
-    return await this.send({ action: "deposit", payload: {nonce: 3} });
+    return await this.send({ action: "deposit", payload: {nonce: nonce} });
   }
 
   /**

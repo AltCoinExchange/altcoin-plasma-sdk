@@ -1,5 +1,6 @@
 import { WithdrawDto } from "./dto/withdraw.dto";
-import { TOKENS } from "./interfaces/objinterfaces";
+import { TOKENS } from "altcoin-ethereum-wallet";
+export * from "altcoin-ethereum-wallet";
 export declare class LightClient {
     private GCI;
     private options;

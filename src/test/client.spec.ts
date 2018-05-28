@@ -1,5 +1,7 @@
 import { expect } from 'chai';
 import {LightClient} from "../main/main";
+import {EthEngine, TOKENS} from "altcoin-ethereum-wallet";
+import {App} from "../main/config/main.config";
 
 describe('client test', function() {
   it('connect', async function() {
@@ -22,12 +24,12 @@ describe('client test', function() {
             {"address":"E26BBB8EFEAD2738EEC642F1BC0C60D750B30608", "pub_key": {"type":"AC26791624DE60","value":"M7C9qN0VmfELcqhjS0vpOe7Xb2VzVAF58rzrwWnW5qg="}, "power":10,"name":""}
           ],
         "app_hash":""
-      }}, "2b529f5b279ce59fd20f1c46908266b664939bc51f2d9a6e6f5cdcbf02ae17cd");
+      }},"2b529f5b279ce59fd20f1c46908266b664939bc51f2d9a6e6f5cdcbf02ae17cd");
     const state = await lightClient.refreshState();
     console.log(state);
 
     // Test deposit
-    // const result = await lightClient.deposit(TOKENS.AUGUR, 1000);
+    const result = await lightClient.deposit(TOKENS.AUGUR, 1000);
     // lightClient.authenticate("f55a297b6dd11a95726c57c2cf180c705c2b2097f7933682eddc957df7ed5c6b");
 
     const state2 = await lightClient.refreshState('volume');
