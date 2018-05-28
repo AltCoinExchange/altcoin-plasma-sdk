@@ -1,6 +1,6 @@
 import { WithdrawDto } from "./dto/withdraw.dto";
 import { TOKENS } from "altcoin-ethereum-wallet";
-export * from "altcoin-ethereum-wallet";
+export { TOKENS, TokenFactory, ERC20, EthEngine, EthereumWallet, generateMnemonic, AugurTokenTestnet, AugurTokenMainnet } from "altcoin-ethereum-wallet";
 export declare class LightClient {
     private GCI;
     private options;

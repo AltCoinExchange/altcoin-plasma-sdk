@@ -5,9 +5,18 @@ import {EthereumAccount} from "./eth/ethereum-account";
 import {uLotion} from "./services/ulotion";
 import {EthEngine, TokenFactory, TOKENS} from "altcoin-ethereum-wallet";
 import {App} from "./config/main.config";
+import {AugurTokenTestnet} from "altcoin-ethereum-wallet/dist/src/eth-tokens/augur";
 
 // Export wallet
-export * from "altcoin-ethereum-wallet";
+export {
+  TOKENS,
+  TokenFactory,
+  ERC20,
+  EthEngine,
+  EthereumWallet,
+  generateMnemonic,
+  AugurTokenTestnet,
+  AugurTokenMainnet} from "altcoin-ethereum-wallet";
 
 export class LightClient {
 
