@@ -29,7 +29,7 @@ describe('client test', function() {
     console.log(JSON.stringify(state));
 
     // Test deposit
-    const result = await lightClient.deposit(TOKENS.AUGUR, 10);
+    const result = await lightClient.deposit(TOKENS.AUGUR, 15);
     // lightClient.authenticate("f55a297b6dd11a95726c57c2cf180c705c2b2097f7933682eddc957df7ed5c6b");
 
     const state2 = await lightClient.refreshState('volume');
