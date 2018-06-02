@@ -61,8 +61,10 @@ export class uLotion {
   public async send(tx) {
 
       const rpcAddr = await this.getGenesisActivePeer();
-      let nonce = Math.floor(Math.random() * (2 << 12));
-      let txBytes = '0x' + ulotionHelper.encode(tx, nonce).toString('hex');
+      // TODO: Remove after examination
+      // let nonce = Math.floor(Math.random() * (2 << 12));
+      // let txBytes = '0x' + ulotionHelper.encode(tx, nonce).toString('hex');
+      let txBytes = '0x' + Buffer.from(JSON.stringify(tx)).toString('hex');
 
       const result = await axios.get(`${rpcAddr.replace(
             'ws:',

@@ -184,7 +184,6 @@ export class LightClient {
     const nonce = await tokenContract.currentDepositNonce();
 
     // Notify side chain about it
-    // TODO: Fix getting the nonce
     return await this.send({ action: "deposit", payload: {nonce: nonce} });
   }
 
