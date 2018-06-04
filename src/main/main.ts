@@ -197,6 +197,8 @@ export class LightClient {
    */
   public async make(sellToken: TOKENS, buyToken: TOKENS, sellAmount: number, buyAmount: number) {
 
+    this.authenticate(this.privKey);
+
     // Get token
     const buyTokenObj = TokenFactory.GetToken(buyToken, this.eng);
     const sellTokenObj = TokenFactory.GetToken(sellToken, this.eng);

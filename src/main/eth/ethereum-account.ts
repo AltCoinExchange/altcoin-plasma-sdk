@@ -33,7 +33,7 @@ export class EthereumAccount {
   }
 
   static recoverAccount(pk: string): EthereumAccount {
-    return new EthereumAccount(Account.fromPrivate(pk));
+    return new EthereumAccount(Account.fromPrivate("0x" + pk));
   }
 
   signReceiptTendermint(sender, sellToken, buyToken, sellAmount, buyAmount, nonce) {
