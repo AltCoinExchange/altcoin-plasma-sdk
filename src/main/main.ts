@@ -124,7 +124,7 @@ export class LightClient {
    * @returns {Promise<any>}
    */
   public async refreshState(path: string = '') {
-    const state = await this.ulotion.state(path) as IBlockchainState;
+    let state = await this.ulotion.state(path) as IBlockchainState;
 
     if (path === '') {
       StateHelper.mapAddressToEnum(state, "volume");
@@ -145,6 +145,10 @@ export class LightClient {
           }
         }
       }
+    }
+
+    if (typeof(state) === "string") {
+      state = JSON.parse(state);
     }
 
     return state;
@@ -203,6 +207,14 @@ export class LightClient {
     const buyTokenObj = TokenFactory.GetToken(buyToken, this.eng);
     const sellTokenObj = TokenFactory.GetToken(sellToken, this.eng);
 
+    const nonceState = await this.refreshState();
+    let nonce = null;
+    try {
+      nonce = nonceState.nonce[sellTokenObj.contractAddress.toLowerCase()][this.acc.address.toLowerCase()];
+    } catch {
+      nonce = 1;
+    }
+
     const order = {
       "action" : "make",
       "payload" : {
@@ -210,7 +222,7 @@ export class LightClient {
         "buyToken": buyTokenObj.contractAddress,
         "sellAmount": sellAmount,
         "buyAmount": buyAmount,
-        "nonce": "1", // TODO: Get latest nonce from state
+        "nonce": nonce,
         "sender": this.acc.address,
       }};
 
