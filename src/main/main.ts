@@ -124,7 +124,7 @@ export class LightClient {
    * @returns {Promise<any>}
    */
   public async refreshState(path: string = '') {
-    const state = JSON.parse(await this.ulotion.state(path)) as IBlockchainState;
+    const state = await this.ulotion.state(path) as IBlockchainState;
 
     if (path === '') {
       StateHelper.mapAddressToEnum(state, "volume");
