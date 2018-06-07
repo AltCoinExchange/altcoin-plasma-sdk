@@ -51,6 +51,7 @@ export const TokenMapping = {
   [TokenConfig.TenXPay.contractAddress.toLowerCase()]: TOKENS.TENXPAY,
   [TokenConfig.Storj.contractAddress.toLowerCase()]: TOKENS.STORJ,
   [TokenConfig.EnjinCoin.contractAddress.toLowerCase()]: TOKENS.ENJINCOIN,
+  [TokenConfig.WETH.contractAddress.toLowerCase()]: TOKENS.WETH,
 };
 
 /**
