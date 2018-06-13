@@ -65,7 +65,7 @@ export declare class LightClient {
      * Get active orders for this account
      * @returns {Promise<any>}
      */
-    getActiveOrders(): Promise<IBlockchainState>;
+    getActiveOrders(all?: boolean, sellToken?: TOKENS, buyToken?: TOKENS): Promise<any>;
     /**
      * Withdraw
      * @param {WithdrawDto} data

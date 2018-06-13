@@ -51,6 +51,7 @@ export const TokenMapping = {
   [TokenConfig.TenXPay.contractAddress.toLowerCase()]: TOKENS.TENXPAY,
   [TokenConfig.Storj.contractAddress.toLowerCase()]: TOKENS.STORJ,
   [TokenConfig.EnjinCoin.contractAddress.toLowerCase()]: TOKENS.ENJINCOIN,
+  [TokenConfig.WETH.contractAddress.toLowerCase()]: TOKENS.WETH,
 };
 
 /**
@@ -235,8 +236,31 @@ export class LightClient {
    * Get active orders for this account
    * @returns {Promise<any>}
    */
-  public async getActiveOrders() {
-    const result = await this.refreshState(`accounts[${this.acc.address}]`);
+  public async getActiveOrders(all: boolean = false, sellToken?: TOKENS, buyToken?: TOKENS) {
+    this.authenticate(this.privKey);
+    const address = this.acc.address.toLowerCase();
+    let result = null;
+    let path = "orders['${address}']";
+
+    if (all) {
+      path = "$..orders..";
+    }
+
+    if (!sellToken && !buyToken) {
+      result = await this.refreshState(`orders['${address}']`);
+    } else if (buyToken && sellToken) {
+      // OMG Need to escape this at raw format O.o
+      result = await this.refreshState(`${path}[?(@.buyToken=='${TokenMappingReverse()[buyToken]}' %26%26 @.sellToken=='${TokenMappingReverse()[sellToken]}')]`);
+    } else if (sellToken) {
+      result = await this.refreshState(`${path}[?(@.sellToken=='${TokenMappingReverse()[sellToken]}')]`);
+    } else if (buyToken) {
+      result = await this.refreshState(`${path}[?(@.buyToken=='${TokenMappingReverse()[buyToken]}')]`);
+    }
+
+    if (result && result.length > 0) {
+      result = result[0];
+    }
+
     return result;
   }
 

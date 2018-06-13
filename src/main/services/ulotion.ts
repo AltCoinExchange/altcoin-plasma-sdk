@@ -40,6 +40,10 @@ export class uLotion {
     const rpcAddr = await this.getGenesisActivePeer();
     const queryResponse = await axios.get(`${rpcAddr}/abci_query?path="${path}"`);
 
+    if (queryResponse.data.error && !queryResponse.data.result) {
+      throw new Error(JSON.stringify(queryResponse.data.error));
+    }
+
     let resp = queryResponse.data.result.response;
     resp.height = Number(resp.height);
 
