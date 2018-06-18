@@ -22,7 +22,7 @@ export {
   AugurTokenTestnet,
   AugurTokenMainnet} from "altcoin-ethereum-wallet";
 
-// TODO: Add dynamic tokens for adding new ones later
+// TODO: Add dynamic tokens for easier adding new ones later
 export const TokenMapping = {
   [TokenConfig.Augur.contractAddress.toLowerCase()]: TOKENS.AUGUR,
   [TokenConfig.Golem.contractAddress.toLowerCase()]: TOKENS.GOLEM,
@@ -240,14 +240,14 @@ export class LightClient {
     this.authenticate(this.privKey);
     const address = this.acc.address.toLowerCase();
     let result = null;
-    let path = "orders['${address}']";
+    let path = `orders['${address}']`;
 
     if (all) {
       path = "$..orders..";
     }
 
     if (!sellToken && !buyToken) {
-      result = await this.refreshState(`orders['${address}']`);
+      result = await this.refreshState(path);
     } else if (buyToken && sellToken) {
       // OMG Need to escape this at raw format O.o
       result = await this.refreshState(`${path}[?(@.buyToken=='${TokenMappingReverse()[buyToken]}' %26%26 @.sellToken=='${TokenMappingReverse()[sellToken]}')]`);

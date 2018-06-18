@@ -24,21 +24,24 @@ describe('client test', function() {
             {"address":"E26BBB8EFEAD2738EEC642F1BC0C60D750B30608", "pub_key": {"type":"AC26791624DE60","value":"M7C9qN0VmfELcqhjS0vpOe7Xb2VzVAF58rzrwWnW5qg="}, "power":10,"name":""}
           ],
         "app_hash":""
-      }},"bb99bb008b169586f392fa41e756cf8ccf9f20b48397c64bd4625b62265f8e2c");
-    // const state = await lightClient.refreshState();
-    // console.log(JSON.stringify(state));
+      }},"3be65d9ccb1850ee6bbb90adfa3fcb9f3cffb590c81859f550ab83b66b4b7aa2");
 
+    // 3be65d9ccb1850ee6bbb90adfa3fcb9f3cffb590c81859f550ab83b66b4b7aa2
+    // bb99bb008b169586f392fa41e756cf8ccf9f20b48397c64bd4625b62265f8e2c
+
+    const state = await lightClient.refreshState();
+    console.log(JSON.stringify(state));
 
     // const orders = await lightClient.getActiveOrders();
     // console.log(JSON.stringify(orders));
 
-    const orders2 = await lightClient.getActiveOrders(true, TOKENS.WETH, TOKENS.GOLEM);
-    console.log(JSON.stringify(orders2));
+    // const orders2 = await lightClient.getActiveOrders(true, TOKENS.WETH, TOKENS.GOLEM);
+    // console.log(JSON.stringify(orders2));
 
     // Test deposit
-    // const result = await lightClient.deposit(TOKENS.AUGUR, 3);
+    // const deposit = await lightClient.deposit(TOKENS.GOLEM, 1000);
 
-    // const result = await lightClient.make(TOKENS.AUGUR, TOKENS.GOLEM, 1, 1);
+    const result = await lightClient.make(TOKENS.GOLEM, TOKENS.WETH, 2, 1);
     // // lightClient.authenticate("f55a297b6dd11a95726c57c2cf180c705c2b2097f7933682eddc957df7ed5c6b");
     //
     // const state2 = await lightClient.refreshState();
