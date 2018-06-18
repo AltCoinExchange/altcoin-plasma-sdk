@@ -248,6 +248,9 @@ export class LightClient {
 
     if (!sellToken && !buyToken) {
       result = await this.refreshState(path);
+      if (result && result.length > 0) {
+        result = result[0];
+      }
     } else if (buyToken && sellToken) {
       // OMG Need to escape this at raw format O.o
       result = await this.refreshState(`${path}[?(@.buyToken=='${TokenMappingReverse()[buyToken]}' %26%26 @.sellToken=='${TokenMappingReverse()[sellToken]}')]`);
@@ -255,10 +258,6 @@ export class LightClient {
       result = await this.refreshState(`${path}[?(@.sellToken=='${TokenMappingReverse()[sellToken]}')]`);
     } else if (buyToken) {
       result = await this.refreshState(`${path}[?(@.buyToken=='${TokenMappingReverse()[buyToken]}')]`);
-    }
-
-    if (result && result.length > 0) {
-      result = result[0];
     }
 
     return result;
