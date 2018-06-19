@@ -32,11 +32,13 @@ describe('client test', function() {
     // const state = await lightClient.refreshState();
     // console.log(JSON.stringify(state));
 
-    const orders = await lightClient.getActiveOrders();
-    console.log(JSON.stringify(orders));
+    // const orders = await lightClient.getActiveOrders();
+    // console.log(JSON.stringify(orders));
+    //
+    // const orders2 = await lightClient.getActiveOrders(true, TOKENS.WETH, TOKENS.AUGUR);
+    // console.log(JSON.stringify(orders2));
 
-    const orders2 = await lightClient.getActiveOrders(true, TOKENS.WETH, TOKENS.AUGUR);
-    console.log(JSON.stringify(orders2));
+    const orders = await lightClient.withdraw(TOKENS.AUGUR, 1);
 
     // Test deposit
     // const deposit = await lightClient.deposit(TOKENS.GOLEM, 1000);

@@ -99,12 +99,12 @@ export class LightClient {
   }
 
   /**
-   * Recover account and sign message
+   * Recover account and sign order
    * @param pkey
    * @param order
    * @returns {any}
    */
-  public recoverAccountAndSignMessage(pkey, order) {
+  public recoverAccountAndSignOrder(pkey, order) {
     let acc = EthereumAccount.recoverAccount(pkey);
     const signature = acc.signReceiptTendermint(order.payload.sender,
       order.payload.sellToken,
@@ -121,10 +121,37 @@ export class LightClient {
   }
 
   /**
+   * Sign withdraw request and send to the tendermint
+   * @param pkey
+   * @param {string} token
+   * @param {number} amount
+   * @returns {WithdrawDto}
+   */
+  public recoverAccountAndSignWithdraw(pkey, token: string, amount: number): WithdrawDto {
+    let acc = EthereumAccount.recoverAccount(pkey);
+    const wdto = {} as WithdrawDto;
+
+    const signature = acc.signWithdrawTendermint(acc.address,
+      token,
+      amount);
+
+    wdto.v = signature.v;
+    wdto.r = signature.r;
+    wdto.s = signature.s;
+    wdto.signature = signature.signature;
+    wdto.messageHash = signature.messageHash;
+    wdto.sender = acc.address;
+    wdto.token = token;
+    wdto.amount = amount.toString();
+
+    return wdto;
+  }
+
+  /**
    * Get lastest state from node
    * @returns {Promise<any>}
    */
-  public async refreshState(path: string = '') {
+  public async refreshState(path: string = ''): Promise<any> {
     let state = await this.ulotion.state(path) as IBlockchainState;
 
     if (path === '') {
@@ -178,7 +205,6 @@ export class LightClient {
     // Get token
     const tokenContract = TokenFactory.GetToken(token, this.eng);
 
-    // TODO: More checks
     // Approve token for spender
     const approvedResult = await tokenContract.approve(this.ethConfig.contractAddress, amount);
 
@@ -227,7 +253,7 @@ export class LightClient {
         "sender": this.acc.address,
       }};
 
-    const signedOrder = this.recoverAccountAndSignMessage(this.privKey, order);
+    const signedOrder = this.recoverAccountAndSignOrder(this.privKey, order);
 
     return this.send(signedOrder);
   }
@@ -264,13 +290,31 @@ export class LightClient {
   }
 
   /**
-   * Withdraw
-   * @param {WithdrawDto} data
-   * @returns {Promise<any>}
+   * Withdraw token
+   * @param {TOKENS} withdrawToken
+   * @param amount
+   * @returns {Promise<void>}
    */
-  public async withdraw(data: WithdrawDto) {
-    // TODO: add contract call
-    //return this.send(data);
+  public async withdraw(withdrawToken: TOKENS, amount: number) {
+
+    this.authenticate(this.privKey);
+
+    // Get token
+    const tokenContract = TokenFactory.GetToken(withdrawToken, this.eng);
+    const withdrawRequest = this.recoverAccountAndSignWithdraw(this.privKey, tokenContract.contractAddress, amount);
+
+    // Notify side chain about it
+    // const wConf = await this.send({ action: "withdraw", payload: withdrawRequest });
+    let wRes = await this.refreshState(`accounts['${this.acc.address.toLowerCase()}'].lastSignedWithdraw`);
+    if (wRes && wRes.length > 0) {
+      wRes = wRes[0];
+    }
+
+    // Withdraw token to account
+    const withdrawConfirmation = await tokenContract.withdraw(parseFloat(wRes.amount), wRes.nonce, wRes.v, wRes.r, wRes.s);
+
+    console.log("Confirmation", withdrawConfirmation);
+    return withdrawConfirmation;
   }
 }
 

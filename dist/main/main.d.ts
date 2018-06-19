@@ -1,6 +1,5 @@
 import { WithdrawDto } from "./dto/withdraw.dto";
 import { TOKENS } from "altcoin-ethereum-wallet";
-import { IBlockchainState } from "./interfaces";
 export { TOKENS, TokenFactory, ERC20, EthEngine, EthereumWallet, TokenConfig, TokenConfigMain, generateMnemonic, AugurTokenTestnet, AugurTokenMainnet } from "altcoin-ethereum-wallet";
 export declare const TokenMapping: {
     [x: string]: TOKENS;
@@ -28,17 +27,25 @@ export declare class LightClient {
      */
     authenticate(privKey: string): void;
     /**
-     * Recover account and sign message
+     * Recover account and sign order
      * @param pkey
      * @param order
      * @returns {any}
      */
-    recoverAccountAndSignMessage(pkey: any, order: any): any;
+    recoverAccountAndSignOrder(pkey: any, order: any): any;
+    /**
+     * Sign withdraw request and send to the tendermint
+     * @param pkey
+     * @param {string} token
+     * @param {number} amount
+     * @returns {WithdrawDto}
+     */
+    recoverAccountAndSignWithdraw(pkey: any, token: string, amount: number): WithdrawDto;
     /**
      * Get lastest state from node
      * @returns {Promise<any>}
      */
-    refreshState(path?: string): Promise<IBlockchainState>;
+    refreshState(path?: string): Promise<any>;
     /**
      * Send transaction to node
      * @param data
@@ -67,9 +74,10 @@ export declare class LightClient {
      */
     getActiveOrders(all?: boolean, sellToken?: TOKENS, buyToken?: TOKENS): Promise<any>;
     /**
-     * Withdraw
-     * @param {WithdrawDto} data
-     * @returns {Promise<any>}
+     * Withdraw token
+     * @param {TOKENS} withdrawToken
+     * @param amount
+     * @returns {Promise<void>}
      */
-    withdraw(data: WithdrawDto): Promise<void>;
+    withdraw(withdrawToken: TOKENS, amount: number): Promise<any>;
 }
