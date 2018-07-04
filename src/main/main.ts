@@ -304,14 +304,14 @@ export class LightClient {
     const withdrawRequest = this.recoverAccountAndSignWithdraw(this.privKey, tokenContract.contractAddress, amount);
 
     // Notify side chain about it
-    // const wConf = await this.send({ action: "withdraw", payload: withdrawRequest });
+    const wConf = await this.send({ action: "withdraw", payload: withdrawRequest });
     let wRes = await this.refreshState(`accounts['${this.acc.address.toLowerCase()}'].lastSignedWithdraw`);
     if (wRes && wRes.length > 0) {
       wRes = wRes[0];
     }
 
     // Withdraw token to account
-    const withdrawConfirmation = await tokenContract.withdraw(parseFloat(wRes.amount), wRes.nonce, wRes.v, wRes.r, wRes.s);
+    const withdrawConfirmation = await tokenContract.withdraw(wRes.amount, wRes.nonce, wRes.v, wRes.r, wRes.s);
 
     console.log("Confirmation", withdrawConfirmation);
     return withdrawConfirmation;

@@ -38,7 +38,12 @@ describe('client test', function() {
     // const orders2 = await lightClient.getActiveOrders(true, TOKENS.WETH, TOKENS.AUGUR);
     // console.log(JSON.stringify(orders2));
 
-    const orders = await lightClient.withdraw(TOKENS.AUGUR, 1);
+    // Test deposit
+    const deposit = await lightClient.deposit(TOKENS.AUGUR, 1);
+
+
+    // Test withdraw
+    // const orders = await lightClient.withdraw(TOKENS.AUGUR, 1);
 
     // Test deposit
     // const deposit = await lightClient.deposit(TOKENS.GOLEM, 1000);
