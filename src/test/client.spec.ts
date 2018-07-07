@@ -43,7 +43,7 @@ describe('client test', function() {
 
 
     // Test withdraw
-    // const orders = await lightClient.withdraw(TOKENS.AUGUR, 1);
+    const orders = await lightClient.withdraw(TOKENS.AUGUR, 1);
 
     // Test deposit
     // const deposit = await lightClient.deposit(TOKENS.GOLEM, 1000);

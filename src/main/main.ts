@@ -311,7 +311,7 @@ export class LightClient {
     }
 
     // Withdraw token to account
-    const withdrawConfirmation = await tokenContract.withdraw(wRes.amount, wRes.nonce, wRes.v, wRes.r, wRes.s);
+    const withdrawConfirmation = await tokenContract.withdraw(wRes.sender, wRes.amount, wRes.nonce, wRes.v, wRes.r, wRes.s);
 
     console.log("Confirmation", withdrawConfirmation);
     return withdrawConfirmation;
