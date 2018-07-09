@@ -1,6 +1,6 @@
 # altcoin-plasma-sdk
 
-## development
-`npm run tsc:watch`
+## Info
+Documentation coming soon! Feel free to contact support@altcoin.io with any questions.
 
-`npm run serve`
+Launch your own decentralized exchange. Documentation coming soon! Please view this page here for details: https://altcoin.io/sdk.html
