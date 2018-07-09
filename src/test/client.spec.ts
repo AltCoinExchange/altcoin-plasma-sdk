@@ -29,14 +29,14 @@ describe('client test', function() {
     // 3be65d9ccb1850ee6bbb90adfa3fcb9f3cffb590c81859f550ab83b66b4b7aa2
     // bb99bb008b169586f392fa41e756cf8ccf9f20b48397c64bd4625b62265f8e2c
 
-    // const state = await lightClient.refreshState();
-    // console.log(JSON.stringify(state));
+    const state = await lightClient.refreshState();
+    console.log(JSON.stringify(state));
 
     // const orders = await lightClient.getActiveOrders();
     // console.log(JSON.stringify(orders));
-    //
-    // const orders2 = await lightClient.getActiveOrders(true, TOKENS.WETH, TOKENS.AUGUR);
-    // console.log(JSON.stringify(orders2));
+
+    const orders2 = await lightClient.getActiveOrders(true, TOKENS.WETH, TOKENS.AUGUR);
+    console.log(JSON.stringify(orders2));
 
     // Test deposit
     const deposit = await lightClient.deposit(TOKENS.AUGUR, 1);
