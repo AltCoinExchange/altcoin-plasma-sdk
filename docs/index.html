@@ -68,6 +68,56 @@
 				<h2 id="info">Info</h2>
 				<p>Documentation coming soon! Preview is at the: <a href="https://altcoinexchange.github.io/altcoin-plasma-sdk/">https://altcoinexchange.github.io/altcoin-plasma-sdk/</a> Feel free to contact <a href="mailto:support@altcoin.io">support@altcoin.io</a> with any questions.</p>
 				<p>Launch your own decentralized exchange. Please view this page here for details: <a href="https://altcoin.io/sdk.html">https://altcoin.io/sdk.html</a></p>
+				<h2 id="api-examples">API Examples</h2>
+				<h3 id="lightclient-initiate">LightClient initiate</h3>
+				<p>Instantiate light client:</p>
+				<pre><code><span class="hljs-keyword">const</span> lightClient = <span class="hljs-keyword">new</span> LightClient(<span class="hljs-literal">null</span>, {
+  lite: <span class="hljs-literal">true</span>,
+  liteTimeout: <span class="hljs-number">10000</span>,
+  tendermintPort: <span class="hljs-number">46657</span>,
+  nodes: [<span class="hljs-string">"https://staging-plasma.altcoin.io:46666"</span>], <span class="hljs-comment">// Altcoin Node</span>
+  genesis: {
+    <span class="hljs-string">"genesis_time"</span>:<span class="hljs-string">"0001-01-01T00:00:00Z"</span>,
+    <span class="hljs-string">"chain_id"</span>:<span class="hljs-string">"test-chain-MOamgH"</span>,
+    <span class="hljs-string">"validators"</span>:
+      [<span class="hljs-meta">
+        {<span class="hljs-meta-string">"address"</span>:<span class="hljs-meta-string">"E26BBB8EFEAD2738EEC642F1BC0C60D750B30608"</span>, <span class="hljs-meta-string">"pub_key"</span>: {<span class="hljs-meta-string">"type"</span>:<span class="hljs-meta-string">"AC26791624DE60"</span>,<span class="hljs-meta-string">"value"</span>:<span class="hljs-meta-string">"M7C9qN0VmfELcqhjS0vpOe7Xb2VzVAF58rzrwWnW5qg="</span>}, <span class="hljs-meta-string">"power"</span>:10,<span class="hljs-meta-string">"name"</span>:<span class="hljs-meta-string">""</span>}
+      </span>],
+    <span class="hljs-string">"app_hash"</span>:<span class="hljs-string">""</span>
+  }}, <span class="hljs-string">"your_private_key"</span>);
+</code></pre><h3 id="lightclient-deposit">LightClient deposit</h3>
+				<p>Deposit token to the side chain</p>
+				<pre><code><span class="hljs-keyword">const</span> deposit = <span class="hljs-function">await lightClient.<span class="hljs-title">deposit</span><span class="hljs-params">(TOKENS.AUGUR, <span class="hljs-number">100</span>)</span></span>;
+</code></pre><h3 id="lightclient-getactiveorders">LightClient getActiveOrders</h3>
+				<p>Get all active orders for exchange</p>
+				<pre><code><span class="hljs-keyword">const</span> orders = <span class="hljs-function">await lightClient.<span class="hljs-title">getActiveOrders</span><span class="hljs-params">(<span class="hljs-keyword">false</span>)</span></span>;
+</code></pre><p>Returns array of the users with their orders:</p>
+				<pre><code> <span class="hljs-string">"0x27eac94d9c17c642ac29fec7b71aff6abd9f4ba4"</span>:[
+    {  
+       <span class="hljs-string">"sellToken"</span>:<span class="hljs-string">"0x9a8a7c6e621210930fc9141664fc26c1f9763cd9"</span>,
+       <span class="hljs-string">"buyToken"</span>:<span class="hljs-string">"0x58d20e5da51b8705343f56bca258d14725c55d2c"</span>,
+       <span class="hljs-string">"sellAmount"</span>:<span class="hljs-number">2</span>,
+       <span class="hljs-string">"buyAmount"</span>:<span class="hljs-number">1</span>,
+       <span class="hljs-string">"nonce"</span>:<span class="hljs-number">2</span>,
+       <span class="hljs-string">"sender"</span>:<span class="hljs-string">"0x27eac94d9c17c642ac29fec7b71aff6abd9f4ba4"</span>,
+       <span class="hljs-string">"v"</span>:<span class="hljs-string">"0x1c"</span>,
+       <span class="hljs-string">"r"</span>:<span class="hljs-string">"0x9e84204de79205f969a4ce68ca3ae290bb3e5a719511f6274cd7d55cec4ec112"</span>,
+       <span class="hljs-string">"s"</span>:<span class="hljs-string">"0x29df31ddce5aea7949bf62b8aba1a2bb4999ad50352f29b274c272b9a779f05f"</span>,
+       <span class="hljs-string">"signature"</span>:<span class="hljs-string">"0x9e84204de79205f969a4ce68ca3ae290bb3e5a719511f6274cd7d55cec4ec11229df31ddce5aea7949bf62b8aba1a2bb4999ad50352f29b274c272b9a779f05f1c"</span>,
+       <span class="hljs-string">"messageHash"</span>:<span class="hljs-string">"0x7dd7105dbe1246ad8b82a2d6b1c92090585e3ce9dc2d6fc6fd6ae311358e942a"</span>
+    }
+ ]
+</code></pre><p>Get all my orders:</p>
+				<pre><code><span class="hljs-keyword">const</span> orders = <span class="hljs-function">await lightClient.<span class="hljs-title">getActiveOrders</span><span class="hljs-params">()</span></span>;
+</code></pre><p>Get all selling orders for Augur token:</p>
+				<pre><code><span class="hljs-keyword">const</span> orders = <span class="hljs-function">await lightClient.<span class="hljs-title">getActiveOrders</span><span class="hljs-params">(<span class="hljs-keyword">false</span>, TOKENS.AUGUR)</span></span>;
+</code></pre><h3 id="make-order">Make order</h3>
+				<p>Create new order on the sidechain selling 2 Golems for one ETH:</p>
+				<pre><code><span class="hljs-keyword">const</span> <span class="hljs-keyword">result</span> = <span class="hljs-keyword">await</span> lightClient.make(TOKENS.GOLEM, TOKENS.WETH, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>);
+</code></pre><h3 id="withdraw-tokens">Withdraw tokens</h3>
+				<p>Withdraw tokens to previously authenticated account:</p>
+				<pre><code><span class="hljs-keyword">const</span> <span class="hljs-keyword">result</span> = <span class="hljs-keyword">await</span> lightClient.withdraw(TOKENS.AUGUR, <span class="hljs-number">1</span>);
+</code></pre>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">

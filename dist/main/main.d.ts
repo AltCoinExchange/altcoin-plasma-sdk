@@ -14,7 +14,7 @@ export declare class LightClient {
     private GCI;
     private options;
     private privKey;
-    private ethConfig;
+    private ethConfig?;
     private state;
     private acc;
     private eng;
@@ -51,7 +51,7 @@ export declare class LightClient {
      * @param data
      * @returns {Promise<any>}
      */
-    private send(data);
+    private send;
     /**
      * Deposit token
      * @param {TOKENS} token
