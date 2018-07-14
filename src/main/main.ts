@@ -268,8 +268,10 @@ export class LightClient {
     let result = null;
     let path = `orders['${address}']`;
 
-    if (all) {
+    if (all && (sellToken || buyToken)) {
       path = "$..orders..";
+    } else if (all) {
+      path = "$..orders"
     }
 
     if (!sellToken && !buyToken) {
