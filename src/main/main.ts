@@ -193,6 +193,23 @@ export class LightClient {
   }
 
   /**
+   * Faucet for the specific token
+   * For testnet only
+   * @param {TOKENS} token
+   * @returns {Promise<void>}
+   */
+  public async faucet(token: TOKENS) {
+
+    this.authenticate(this.privKey);
+
+    // Get token
+    const tokenContract = TokenFactory.GetToken(token, this.eng);
+
+    // Call faucet function
+    return await tokenContract.faucet();
+  }
+
+  /**
    * Deposit token
    * @param {TOKENS} token
    * @param {number} amount

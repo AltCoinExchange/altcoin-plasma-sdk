@@ -31,7 +31,7 @@ describe('client test', function() {
 
     // Test deposit
     const deposit = await lightClient.deposit(TOKENS.AUGUR, 100);
-    const result = await lightClient.make(TOKENS.AUGUR, TOKENS.WETH, 2, 1);
+    const result = await lightClient.make(TOKENS.AUGUR, TOKENS.WETH, 10, 0.00001);
 
     const state = await lightClient.refreshState();
     console.log(JSON.stringify(state));

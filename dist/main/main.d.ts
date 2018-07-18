@@ -53,6 +53,13 @@ export declare class LightClient {
      */
     private send;
     /**
+     * Faucet for the specific token
+     * For testnet only
+     * @param {TOKENS} token
+     * @returns {Promise<void>}
+     */
+    faucet(token: TOKENS): Promise<any>;
+    /**
      * Deposit token
      * @param {TOKENS} token
      * @param {number} amount
