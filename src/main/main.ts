@@ -273,7 +273,7 @@ export class LightClient {
 
     const signedOrder = this.recoverAccountAndSignOrder(this.privKey, order);
 
-    return this.send(signedOrder);
+    return await this.send(signedOrder);
   }
 
   /**
