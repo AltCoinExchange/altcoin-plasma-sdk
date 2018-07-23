@@ -35,7 +35,7 @@ Deposit token to the side chain
 ### LightClient getActiveOrders
 Get all active orders for exchange
 
-    const orders = await lightClient.getActiveOrders(false);
+    const orders = await lightClient.getActiveOrders(true);
 
 Returns array of the users with their orders:
 
