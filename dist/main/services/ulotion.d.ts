@@ -2,6 +2,7 @@ export declare class uLotion {
     private GCI;
     private options;
     private nodes;
+    private eventRpc;
     constructor(GCI: any, options: any);
     /**
      * Get genesis active peer
@@ -20,4 +21,10 @@ export declare class uLotion {
      * @returns {Promise<any>}
      */
     send(tx: any): Promise<any>;
+    /**
+     * Subscribe to transaction event
+     * @param func
+     * @returns {Promise<void>}
+     */
+    subscribeTx(func: any): Promise<void>;
 }

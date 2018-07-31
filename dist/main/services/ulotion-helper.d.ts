@@ -10,6 +10,12 @@ export declare class ulotionHelper {
     static encode(txData: any, nonce: any): any;
     static fetchGenesis(GCI: any): Promise<any>;
     /**
+     * Get hash of the object
+     * @param obj
+     * @returns {any}
+     */
+    static hash(obj: any): any;
+    /**
      * Parse string
      * @param json
      */

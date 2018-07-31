@@ -8,6 +8,7 @@ import {App} from "./config/main.config";
 import {AugurTokenTestnet} from "altcoin-ethereum-wallet/dist/src/eth-tokens/augur";
 import {IBlockchainState} from "./interfaces";
 import {StateHelper} from "./common/state-helper";
+import {StateMergePatch} from "./common/state-merge-patch";
 
 // Export wallet
 export {
@@ -79,6 +80,9 @@ export class LightClient {
   private eng: EthEngine;
   private ulotion: uLotion;
   private keystore: any;
+  public static state: any;
+  public stateWatcher: StateMergePatch;
+  public eventFeed;
 
   constructor(private GCI: string, private options, private privKey, private ethConfig?) {
     this.ulotion = new uLotion(this.GCI, this.options);
@@ -342,6 +346,29 @@ export class LightClient {
 
     console.log("Confirmation", withdrawConfirmation);
     return withdrawConfirmation;
+  }
+
+  /**
+   * Subscribe at the event handler
+   * @param {string} path
+   * @param func
+   * @returns {Promise<() => Promise<any>>}
+   */
+  public async subscribe(path: string, func) {
+
+    const state = await this.refreshState(path);
+    this.stateWatcher = new StateMergePatch(state, path);
+
+    const that = this;
+    const evtHandler = async () => {
+      const result = await that.stateWatcher.diff(that);
+      func(result);
+      return result;
+    };
+
+    const evt = await this.ulotion.subscribeTx(evtHandler);
+
+    return evtHandler;
   }
 }
 

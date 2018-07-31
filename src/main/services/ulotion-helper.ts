@@ -67,6 +67,17 @@ export class ulotionHelper {
   }
 
   /**
+   * Get hash of the object
+   * @param obj
+   * @returns {any}
+   */
+  public static hash(obj) {
+    let hash = createHash('sha256');
+    let result = ulotionHelper.stringify(obj);
+    return hash.update(result, 'utf8').digest().toString('hex');
+  }
+
+  /**
    * Parse string
    * @param json
    */

@@ -1,5 +1,6 @@
 import { WithdrawDto } from "./dto/withdraw.dto";
 import { TOKENS } from "altcoin-ethereum-wallet";
+import { StateMergePatch } from "./common/state-merge-patch";
 export { TOKENS, TokenFactory, ERC20, EthEngine, EthereumWallet, TokenConfig, TokenConfigMain, generateMnemonic, AugurTokenTestnet, AugurTokenMainnet } from "altcoin-ethereum-wallet";
 export declare const TokenMapping: {
     [x: string]: TOKENS;
@@ -20,6 +21,9 @@ export declare class LightClient {
     private eng;
     private ulotion;
     private keystore;
+    static state: any;
+    stateWatcher: StateMergePatch;
+    eventFeed: any;
     constructor(GCI: string, options: any, privKey: any, ethConfig?: any);
     /**
      * Authenticate user
@@ -90,4 +94,11 @@ export declare class LightClient {
      * @returns {Promise<void>}
      */
     withdraw(withdrawToken: TOKENS, amount: number, useLatestState?: boolean): Promise<any>;
+    /**
+     * Subscribe at the event handler
+     * @param {string} path
+     * @param func
+     * @returns {Promise<() => Promise<any>>}
+     */
+    subscribe(path: string, func: any): Promise<() => Promise<any>>;
 }

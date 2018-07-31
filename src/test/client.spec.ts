@@ -3,6 +3,28 @@ import {LightClient} from "../main/main";
 import {EthEngine, TOKENS} from "altcoin-ethereum-wallet";
 import {App} from "../main/config/main.config";
 
+const lightClientConfig =
+  {
+    lite: true,
+    liteTimeout: 10000,
+    tendermintPort: 46657,
+    nodes: ["http://localhost:46657"],
+    genesis: {
+      "genesis_time": "0001-01-01T00:00:00Z",
+      "chain_id": "test-chain-MOamgH",
+      "validators":
+        [
+          {
+            "address": "E26BBB8EFEAD2738EEC642F1BC0C60D750B30608",
+            "pub_key": {"type": "AC26791624DE60", "value": "M7C9qN0VmfELcqhjS0vpOe7Xb2VzVAF58rzrwWnW5qg="},
+            "power": 10,
+            "name": ""
+          }
+        ],
+      "app_hash": ""
+    }
+  };
+
 describe('client test', function() {
   it('connect', async function() {
 
@@ -85,5 +107,30 @@ describe('client test', function() {
     const state2 = await lightClient.refreshState('volume');
     console.log(state2);
     expect(true).to.be.true;
+  });
+
+  it('Test events', async function() {
+
+    this.timeout(160000);
+    const peer2 = "b37095b01e624caef9b253eeb3f1f7dc80885c9fd4d31ea20586f2dd911b51ae";
+    const peer1 = "0fc067498cdbb1d8f102035cc4160469fb098c7c7fdfd0801fc6e681a982257b";
+
+    // Pass null to disable discovery
+    const lightClient = new LightClient(null, lightClientConfig,"3be65d9ccb1850ee6bbb90adfa3fcb9f3cffb590c81859f550ab83b66b4b7aa2");
+
+    const state = await lightClient.refreshState();
+    console.log(JSON.stringify(state));
+
+    lightClient.subscribe("$..orders", (e) => {
+      console.log(e);
+    });
+
+    await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(true);
+      }, 100000);
+    });
+    // console.log(JSON.stringify(result));
+
   });
 });

@@ -1,9 +1,12 @@
 import {ulotionHelper} from "./ulotion-helper";
 let axios = require('axios');
+import * as tendermint from'tendermint';
+
 
 export class uLotion {
 
   private nodes = [];
+  private eventRpc;
 
   constructor(private GCI, private options) {
     this.nodes = options.nodes;
@@ -82,5 +85,31 @@ export class uLotion {
         );
 
       return result.data.result;
+  }
+
+  /**
+   * Subscribe to transaction event
+   * @param func
+   * @returns {Promise<void>}
+   */
+  public async subscribeTx(func) {
+
+    const rpcAddr = (await this.getGenesisActivePeer()).replace('http:', 'ws:');
+    console.log(rpcAddr);
+
+    // TODO: Enable once tendermint package is properly packed
+    // let rpc = tendermint.RpcClient(rpcAddr);
+    // this.eventRpc = rpc;
+    //
+    // rpc.on('close', e => {
+    //   console.log(e);
+    // });
+    //
+    // // console.log(rpc);
+    // rpc.on('error', e => {
+    //   console.log('RPC Error: ', e);
+    // });
+    //
+    // rpc.subscribe({query: "tm.event='Tx'"}, func);
   }
 }
