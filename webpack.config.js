@@ -87,7 +87,7 @@ var webpack_opts = {
             },
             {
                 test: /\.js$/,
-                loader: 'ts-loader',
+                loader: 'source-map-loader',
                 exclude: /node_modules/,
             }
         ]
