@@ -98,18 +98,18 @@ export class uLotion {
     console.log(rpcAddr);
 
     // TODO: Enable once tendermint package is properly packed
-    // let rpc = tendermint.RpcClient(rpcAddr);
-    // this.eventRpc = rpc;
-    //
-    // rpc.on('close', e => {
-    //   console.log(e);
-    // });
-    //
-    // // console.log(rpc);
-    // rpc.on('error', e => {
-    //   console.log('RPC Error: ', e);
-    // });
-    //
-    // rpc.subscribe({query: "tm.event='Tx'"}, func);
+    let rpc = tendermint.RpcClient(rpcAddr);
+    this.eventRpc = rpc;
+
+    rpc.on('close', e => {
+      console.log(e);
+    });
+
+    // console.log(rpc);
+    rpc.on('error', e => {
+      console.log('RPC Error: ', e);
+    });
+
+    rpc.subscribe({query: "tm.event='Tx'"}, func);
   }
 }
