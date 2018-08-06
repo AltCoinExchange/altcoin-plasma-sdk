@@ -17,6 +17,7 @@ export declare class LightClient {
     private privKey;
     private ethConfig?;
     private state;
+    private states;
     private acc;
     private eng;
     private ulotion;
@@ -95,10 +96,17 @@ export declare class LightClient {
      */
     withdraw(withdrawToken: TOKENS, amount: number, useLatestState?: boolean): Promise<any>;
     /**
-     * Subscribe at the event handler
+     * Subscribe at the event
      * @param {string} path
      * @param func
      * @returns {Promise<() => Promise<any>>}
      */
-    subscribe(path: string, func: any): Promise<() => Promise<any>>;
+    subscribe(path: string, func: any): Promise<() => Promise<void>>;
+    /**
+     * Subscribe at the multiple events
+     * @param {string} path
+     * @param func
+     * @returns {Promise<() => Promise<any>>}
+     */
+    subscribeMulti(path: string[], func: any): Promise<() => Promise<void>>;
 }

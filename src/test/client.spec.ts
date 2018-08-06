@@ -121,8 +121,12 @@ describe('client test', function() {
     const state = await lightClient.refreshState();
     console.log(JSON.stringify(state));
 
-    lightClient.subscribe("$..orders", (e) => {
-      console.log(e);
+    // await lightClient.subscribe("$..orders", (path, value) => {
+    //   console.log(`Event: ${path}: ${JSON.stringify(value)}`);
+    // });
+
+    await lightClient.subscribeMulti(["$..orders", "$..accounts"], (path, value) => {
+      console.log(`Event: ${path}: ${JSON.stringify(value)}`);
     });
 
     await new Promise((resolve, reject) => {

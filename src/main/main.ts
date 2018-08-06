@@ -78,6 +78,7 @@ export const TokenMappingReverse = () => {
 export class LightClient {
 
   private state: any;
+  private states: Map<string, StateMergePatch>;
   private acc: EthereumAccount;
   private eng: EthEngine;
   private ulotion: uLotion;
@@ -91,6 +92,7 @@ export class LightClient {
     if (!ethConfig) {
       this.ethConfig = App.eth;
     }
+    this.states = new Map<string, StateMergePatch>();
   }
 
   /**
@@ -351,21 +353,36 @@ export class LightClient {
   }
 
   /**
-   * Subscribe at the event handler
+   * Subscribe at the event
    * @param {string} path
    * @param func
    * @returns {Promise<() => Promise<any>>}
    */
   public async subscribe(path: string, func) {
+    return this.subscribeMulti([path], func);
+  }
 
-    const state = await this.refreshState(path);
-    this.stateWatcher = new StateMergePatch(state, path);
+  /**
+   * Subscribe at the multiple events
+   * @param {string} path
+   * @param func
+   * @returns {Promise<() => Promise<any>>}
+   */
+  public async subscribeMulti(path: string[], func) {
+
+    for (let i of path) {
+      const state = await this.refreshState(i);
+      const stateWatcher = new StateMergePatch(state, i);
+      this.states.set(i, stateWatcher);
+    }
 
     const that = this;
     const evtHandler = async () => {
-      const result = await that.stateWatcher.diff(that);
-      func(result);
-      return result;
+
+      that.states.forEach(async (value, key) => {
+        const result = await value.diff(that);
+        func(key, result);
+      });
     };
 
     const evt = await this.ulotion.subscribeTx(evtHandler);
