@@ -94,7 +94,10 @@ export class uLotion {
    */
   public async subscribeTx(func) {
 
-    const rpcAddr = (await this.getGenesisActivePeer()).replace('http:', 'ws:');
+    const rpcAddr = (await this.getGenesisActivePeer())
+      .replace('http:', 'ws:')
+      .replace('https:', 'wss:');
+
     console.log(rpcAddr);
 
     // TODO: Enable once tendermint package is properly packed

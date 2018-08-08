@@ -115,6 +115,7 @@ describe('client test', function() {
     const peer2 = "b37095b01e624caef9b253eeb3f1f7dc80885c9fd4d31ea20586f2dd911b51ae";
     const peer1 = "0fc067498cdbb1d8f102035cc4160469fb098c7c7fdfd0801fc6e681a982257b";
 
+    // lightClientConfig.nodes[0] = "https://staging-plasma.altcoin.io:46666";
     // Pass null to disable discovery
     const lightClient = new LightClient(null, lightClientConfig,"3be65d9ccb1850ee6bbb90adfa3fcb9f3cffb590c81859f550ab83b66b4b7aa2");
 
