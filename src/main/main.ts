@@ -109,9 +109,9 @@ export class LightClient {
   public authenticate(privKey: string) {
     this.privKey = privKey;
     this.acc = EthereumAccount.recoverAccount(privKey);
-    const config = Object.assign({}, this.ethConfig);
-    config.wshost = config.wshost.replace("wss:", "https:");
-    const engine = new EthEngine(null, config, null);
+    // const config = Object.assign({}, this.ethConfig);
+    // config.wshost = config.wshost.replace("wss:", "https:");
+    const engine = new EthEngine(null, this.ethConfig, null);
     this.keystore = engine.recoverAccount(this.privKey);
     engine.login(this.keystore);
     return engine;

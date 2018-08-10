@@ -1,6 +1,6 @@
 {
   "name": "altcoin-plasma-sdk",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Altcoin plasma sdk",
   "main": "dist/index.js",
   "typings": "dist/main/main.d.ts",
