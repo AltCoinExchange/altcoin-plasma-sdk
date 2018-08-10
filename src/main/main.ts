@@ -92,6 +92,7 @@ export class LightClient {
     if (!ethConfig) {
       this.ethConfig = App.eth;
     }
+    this.eng = new EthEngine(null, this.ethConfig, null);
     this.states = new Map<string, StateMergePatch>();
   }
 
@@ -102,7 +103,6 @@ export class LightClient {
   public authenticate(privKey: string) {
     this.privKey = privKey;
     this.acc = EthereumAccount.recoverAccount(privKey);
-    this.eng = new EthEngine(null, this.ethConfig, null);
     this.keystore = this.eng.recoverAccount(this.privKey);
     this.eng.login(this.keystore);
   }
