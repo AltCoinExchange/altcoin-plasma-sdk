@@ -1,5 +1,5 @@
 import { WithdrawDto } from "./dto/withdraw.dto";
-import { TOKENS } from "altcoin-ethereum-wallet";
+import { EthEngine, TOKENS } from "altcoin-ethereum-wallet";
 import { StateMergePatch } from "./common/state-merge-patch";
 export { TOKENS, TokenFactory, ERC20, EthEngine, EthereumWallet, TokenConfig, TokenConfigMain, generateMnemonic, AugurTokenTestnet, AugurTokenMainnet } from "altcoin-ethereum-wallet";
 export declare const TokenMapping: {
@@ -19,7 +19,6 @@ export declare class LightClient {
     private state;
     private states;
     private acc;
-    private eng;
     private ulotion;
     private keystore;
     static state: any;
@@ -27,10 +26,14 @@ export declare class LightClient {
     eventFeed: any;
     constructor(GCI: string, options: any, privKey: any, ethConfig?: any);
     /**
+     * Get account from private key
+     */
+    private getAccount;
+    /**
      * Authenticate user
      * @param {string} privKey
      */
-    authenticate(privKey: string): void;
+    authenticate(privKey: string): EthEngine;
     /**
      * Recover account and sign order
      * @param pkey

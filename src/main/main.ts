@@ -80,7 +80,7 @@ export class LightClient {
   private state: any;
   private states: Map<string, StateMergePatch>;
   private acc: EthereumAccount;
-  private eng: EthEngine;
+  // private eng: EthEngine; : TODO: Fix ws reconnect
   private ulotion: uLotion;
   private keystore: any;
   public static state: any;
@@ -92,8 +92,14 @@ export class LightClient {
     if (!ethConfig) {
       this.ethConfig = App.eth;
     }
-    this.eng = new EthEngine(null, this.ethConfig, null);
     this.states = new Map<string, StateMergePatch>();
+  }
+
+  /**
+   * Get account from private key
+   */
+  private getAccount() {
+    return EthereumAccount.recoverAccount(this.privKey);
   }
 
   /**
@@ -103,8 +109,12 @@ export class LightClient {
   public authenticate(privKey: string) {
     this.privKey = privKey;
     this.acc = EthereumAccount.recoverAccount(privKey);
-    this.keystore = this.eng.recoverAccount(this.privKey);
-    this.eng.login(this.keystore);
+    const config = Object.assign({}, this.ethConfig);
+    config.wshost = config.wshost.replace("wss:", "https:");
+    const engine = new EthEngine(null, config, null);
+    this.keystore = engine.recoverAccount(this.privKey);
+    engine.login(this.keystore);
+    return engine;
   }
 
   /**
@@ -209,10 +219,10 @@ export class LightClient {
    */
   public async faucet(token: TOKENS) {
 
-    this.authenticate(this.privKey);
+    const eng = this.authenticate(this.privKey);
 
     // Get token
-    const tokenContract = TokenFactory.GetToken(token, this.eng);
+    const tokenContract = TokenFactory.GetToken(token, eng);
 
     // Call faucet function
     return await tokenContract.faucet();
@@ -226,10 +236,10 @@ export class LightClient {
    */
   public async deposit(token: TOKENS, amount: number) {
 
-    this.authenticate(this.privKey);
+    const eng = this.authenticate(this.privKey);
 
     // Get token
-    const tokenContract = TokenFactory.GetToken(token, this.eng);
+    const tokenContract = TokenFactory.GetToken(token, eng);
 
     // Approve token for spender
     const approvedResult = await tokenContract.approve(this.ethConfig.contractAddress, amount);
@@ -254,11 +264,11 @@ export class LightClient {
    */
   public async make(sellToken: TOKENS, buyToken: TOKENS, sellAmount: number, buyAmount: number) {
 
-    this.authenticate(this.privKey);
+    const eng = this.authenticate(this.privKey);
 
     // Get token
-    const buyTokenObj = TokenFactory.GetToken(buyToken, this.eng);
-    const sellTokenObj = TokenFactory.GetToken(sellToken, this.eng);
+    const buyTokenObj = TokenFactory.GetToken(buyToken, eng);
+    const sellTokenObj = TokenFactory.GetToken(sellToken, eng);
 
     const nonceState = await this.refreshState();
     let nonce = null;
@@ -289,8 +299,8 @@ export class LightClient {
    * @returns {Promise<any>}
    */
   public async getActiveOrders(all: boolean = false, sellToken?: TOKENS, buyToken?: TOKENS) {
-    this.authenticate(this.privKey);
-    const address = this.acc.address.toLowerCase();
+    const acc =  this.getAccount();
+    const address = acc.address.toLowerCase();
     let result = null;
     let path = `orders['${address}']`;
 
@@ -328,10 +338,10 @@ export class LightClient {
    */
   public async withdraw(withdrawToken: TOKENS, amount: number, useLatestState: boolean = false) {
 
-    this.authenticate(this.privKey);
+    const eng = this.authenticate(this.privKey);
 
     // Get token
-    const tokenContract = TokenFactory.GetToken(withdrawToken, this.eng);
+    const tokenContract = TokenFactory.GetToken(withdrawToken, eng);
     const withdrawRequest = this.recoverAccountAndSignWithdraw(this.privKey, tokenContract.contractAddress, amount);
 
     // Notify side chain about it
