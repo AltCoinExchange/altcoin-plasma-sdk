@@ -264,16 +264,16 @@ export class LightClient {
    */
   public async make(sellToken: TOKENS, buyToken: TOKENS, sellAmount: number, buyAmount: number) {
 
-    const eng = this.authenticate(this.privKey);
+    const acc = this.getAccount();
 
     // Get token
-    const buyTokenObj = TokenFactory.GetToken(buyToken, eng);
-    const sellTokenObj = TokenFactory.GetToken(sellToken, eng);
+    const buyTokenObj = TokenFactory.GetToken(buyToken, null);
+    const sellTokenObj = TokenFactory.GetToken(sellToken, null);
 
     const nonceState = await this.refreshState();
     let nonce = null;
     try {
-      nonce = nonceState.nonce[sellTokenObj.contractAddress.toLowerCase()][this.acc.address.toLowerCase()];
+      nonce = nonceState.nonce[sellTokenObj.contractAddress.toLowerCase()][acc.address.toLowerCase()];
     } catch {
       nonce = 1;
     }
@@ -286,7 +286,7 @@ export class LightClient {
         "sellAmount": sellAmount,
         "buyAmount": buyAmount,
         "nonce": nonce,
-        "sender": this.acc.address,
+        "sender": acc.address,
       }};
 
     const signedOrder = this.recoverAccountAndSignOrder(this.privKey, order);
@@ -299,7 +299,7 @@ export class LightClient {
    * @returns {Promise<any>}
    */
   public async getActiveOrders(all: boolean = false, sellToken?: TOKENS, buyToken?: TOKENS) {
-    const acc =  this.getAccount();
+    const acc = this.getAccount();
     const address = acc.address.toLowerCase();
     let result = null;
     let path = `orders['${address}']`;
@@ -338,7 +338,7 @@ export class LightClient {
    */
   public async withdraw(withdrawToken: TOKENS, amount: number, useLatestState: boolean = false) {
 
-    const eng = this.authenticate(this.privKey);
+    let eng = this.authenticate(this.privKey);
 
     // Get token
     const tokenContract = TokenFactory.GetToken(withdrawToken, eng);
@@ -357,6 +357,8 @@ export class LightClient {
 
     // Withdraw token to account
     const withdrawConfirmation = await tokenContract.withdraw(wRes.sender, wRes.amount, wRes.nonce, wRes.v, wRes.r, wRes.s);
+
+    eng = null;
 
     console.log("Confirmation", withdrawConfirmation);
     return withdrawConfirmation;
