@@ -56,6 +56,7 @@ export const TokenMapping = {
   [TokenConfig.ZeroX.contractAddress.toLowerCase()]: TOKENS.ZEROX,
   [TokenConfig.Bloom.contractAddress.toLowerCase()]: TOKENS.BLOOM,
   [TokenConfig.Lunyr.contractAddress.toLowerCase()]: TOKENS.LUNYR,
+  [TokenConfig.Monaco.contractAddress.toLowerCase()]: TOKENS.MONACO,
 };
 
 /**
