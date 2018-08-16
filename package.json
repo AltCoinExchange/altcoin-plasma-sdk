@@ -44,7 +44,7 @@
   },
   "homepage": "https://github.com/AltCoinExchange/altcoin-plasma-sdk#readme",
   "dependencies": {
-    "altcoin-ethereum-wallet": "git+ssh://git@github.com/AltCoinExchange/altcoin-ethereum-wallet.git",
+    "altcoin-ethereum-wallet": "git+https://github.com/AltCoinExchange/altcoin-ethereum-wallet.git",
     "axios": "^0.18.0",
     "bn.js": "^4.11.8",
     "camelcase": "^5.0.0",
