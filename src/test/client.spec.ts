@@ -52,8 +52,8 @@ describe('client test', function() {
     // bb99bb008b169586f392fa41e756cf8ccf9f20b48397c64bd4625b62265f8e2c
 
     // Test deposit
-    // const deposit = await lightClient.deposit(TOKENS.AUGUR, 100);
-    const result = await lightClient.make(TOKENS.AUGUR, TOKENS.WETH, 1, 0.00001);
+    const deposit = await lightClient.deposit(TOKENS.AUGUR, 100);
+    // const result = await lightClient.make(TOKENS.AUGUR, TOKENS.WETH, 1, 0.00001);
 
     const state = await lightClient.refreshState();
     console.log(JSON.stringify(state));
