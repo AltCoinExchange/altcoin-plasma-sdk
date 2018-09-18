@@ -42,7 +42,7 @@ export class ulotionHelper {
 
   public static fetchGenesis(GCI): Promise<any> {
     return new Promise((resolve, reject) => {
-      let hub = signalhub(GCI, ['https://swap.altcoin.io:9091']);
+      let hub = signalhub(GCI, ['https://signalhub.altcoin.io']);
       let sw;
 
       // Check for environment
