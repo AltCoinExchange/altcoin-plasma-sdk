@@ -57,7 +57,7 @@
     "json-stable-stringify": "^1.0.1",
     "jsondiffpatch": "^0.3.11",
     "jsonpath": "^1.0.0",
-    "node-wget": "^0.4.2",
+    "node-wget": "^0.4.3",
     "protocol-buffers": "^4.0.4",
     "protocol-buffers-encodings": "^1.1.0",
     "rxjs": "^5.5.8",
